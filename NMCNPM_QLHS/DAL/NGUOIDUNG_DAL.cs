@@ -8,6 +8,8 @@ namespace NMCNPM_QLHS.DAL
 {
     class NGUOIDUNG_DAL
     {
+
+
         public static bool KiemTraTonTai(string tendangnhap)
         {
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
