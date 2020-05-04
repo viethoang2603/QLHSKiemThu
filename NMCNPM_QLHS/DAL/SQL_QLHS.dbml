@@ -1,0 +1,461 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="QLHS" Class="SQL_QLHSDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(local);Initial Catalog=QLHS;Integrated Security=True" SettingsObjectName="NMCNPM_QLHS.Properties.Settings" SettingsPropertyName="QLHSConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.BANGDIEMMON" Member="BANGDIEMMONs">
+    <Type Name="BANGDIEMMON">
+      <Column Name="MABANGDIEMMON" Type="System.String" DbType="Char(7) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MAQTHOC" Type="System.String" DbType="Char(6)" CanBeNull="true" />
+      <Column Name="MAMONHOC" Type="System.String" DbType="Char(4)" CanBeNull="true" />
+      <Column Name="DIEMTB" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Association Name="BANGDIEMMON_CT_DIEMMON" Member="CT_DIEMMONs" ThisKey="MABANGDIEMMON" OtherKey="MABANGDIEMMON" Type="CT_DIEMMON" />
+      <Association Name="MONHOC_BANGDIEMMON" Member="MONHOC" ThisKey="MAMONHOC" OtherKey="MAMONHOC" Type="MONHOC" IsForeignKey="true" />
+      <Association Name="QUATRINHHOC_BANGDIEMMON" Member="QUATRINHHOC" ThisKey="MAQTHOC" OtherKey="MAQTHOC" Type="QUATRINHHOC" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.THAMSO" Member="THAMSOs">
+    <Type Name="THAMSO">
+      <Column Name="TENTHAMSO" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="GIATRI" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BAOCAOTONGKETHK" Member="BAOCAOTONGKETHKs">
+    <Type Name="BAOCAOTONGKETHK">
+      <Column Name="MAHK" Type="System.String" DbType="Char(4) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MALOP" Type="System.String" DbType="Char(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SISO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SOLUONGDAT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TYLE" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="HOCKY_BAOCAOTONGKETHK" Member="HOCKY" ThisKey="MAHK" OtherKey="MAHK" Type="HOCKY" IsForeignKey="true" />
+      <Association Name="LOP_BAOCAOTONGKETHK" Member="LOP" ThisKey="MALOP" OtherKey="MALOP" Type="LOP" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BAOCAOTONGKETMON" Member="BAOCAOTONGKETMONs">
+    <Type Name="BAOCAOTONGKETMON">
+      <Column Name="MABCTKMON" Type="System.String" DbType="Char(7) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MAMONHOC" Type="System.String" DbType="Char(4)" CanBeNull="true" />
+      <Column Name="MAHOCKY" Type="System.String" DbType="Char(4)" CanBeNull="true" />
+      <Association Name="BAOCAOTONGKETMON_CT_BCTKMON" Member="CT_BCTKMONs" ThisKey="MABCTKMON" OtherKey="MABCTKMON" Type="CT_BCTKMON" />
+      <Association Name="HOCKY_BAOCAOTONGKETMON" Member="HOCKY" ThisKey="MAHOCKY" OtherKey="MAHK" Type="HOCKY" IsForeignKey="true" />
+      <Association Name="MONHOC_BAOCAOTONGKETMON" Member="MONHOC" ThisKey="MAMONHOC" OtherKey="MAMONHOC" Type="MONHOC" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CT_BCTKMON" Member="CT_BCTKMONs">
+    <Type Name="CT_BCTKMON">
+      <Column Name="MABCTKMON" Type="System.String" DbType="Char(7) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MALOP" Type="System.String" DbType="Char(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SISO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SOLUONGDAT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TYLE" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="BAOCAOTONGKETMON_CT_BCTKMON" Member="BAOCAOTONGKETMON" ThisKey="MABCTKMON" OtherKey="MABCTKMON" Type="BAOCAOTONGKETMON" IsForeignKey="true" />
+      <Association Name="LOP_CT_BCTKMON" Member="LOP" ThisKey="MALOP" OtherKey="MALOP" Type="LOP" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CT_DIEMMON" Member="CT_DIEMMONs">
+    <Type Name="CT_DIEMMON">
+      <Column Name="MABANGDIEMMON" Type="System.String" DbType="Char(7) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MALHKT" Type="System.String" DbType="Char(6) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DIEM" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Association Name="BANGDIEMMON_CT_DIEMMON" Member="BANGDIEMMON" ThisKey="MABANGDIEMMON" OtherKey="MABANGDIEMMON" Type="BANGDIEMMON" IsForeignKey="true" />
+      <Association Name="LOAIHINHKIEMTRA_CT_DIEMMON" Member="LOAIHINHKIEMTRA" ThisKey="MALHKT" OtherKey="MALHKT" Type="LOAIHINHKIEMTRA" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.HOCKY" Member="HOCKies">
+    <Type Name="HOCKY">
+      <Column Name="MAHK" Type="System.String" DbType="Char(4) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TENHOCKY" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="HESO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="HOCKY_BAOCAOTONGKETHK" Member="BAOCAOTONGKETHKs" ThisKey="MAHK" OtherKey="MAHK" Type="BAOCAOTONGKETHK" />
+      <Association Name="HOCKY_BAOCAOTONGKETMON" Member="BAOCAOTONGKETMONs" ThisKey="MAHK" OtherKey="MAHOCKY" Type="BAOCAOTONGKETMON" />
+      <Association Name="HOCKY_QUATRINHHOC" Member="QUATRINHHOCs" ThisKey="MAHK" OtherKey="MAHK" Type="QUATRINHHOC" />
+    </Type>
+  </Table>
+  <Table Name="dbo.HOCSINH" Member="HOCSINHs">
+    <Type Name="HOCSINH">
+      <Column Name="MAHS" Type="System.String" DbType="Char(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="HOTEN" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GIOITINH" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NGAYSINH" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DIACHI" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="EMAIL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ANH" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="HOCSINH_QUATRINHHOC" Member="QUATRINHHOCs" ThisKey="MAHS" OtherKey="MAHS" Type="QUATRINHHOC" />
+    </Type>
+  </Table>
+  <Table Name="dbo.KHOILOP" Member="KHOILOPs">
+    <Type Name="KHOILOP">
+      <Column Name="MAKHOI" Type="System.String" DbType="Char(6) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MANAM" Type="System.String" DbType="Char(4)" CanBeNull="true" />
+      <Column Name="TENKHOI" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SOLOP" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="KHOILOP_LOP" Member="LOPs" ThisKey="MAKHOI" OtherKey="MAKHOI" Type="LOP" />
+      <Association Name="NAMHOC_KHOILOP" Member="NAMHOC" ThisKey="MANAM" OtherKey="MANAMHOC" Type="NAMHOC" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LOAIHINHKIEMTRA" Member="LOAIHINHKIEMTRAs">
+    <Type Name="LOAIHINHKIEMTRA">
+      <Column Name="MALHKT" Type="System.String" DbType="Char(6) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TENLHKT" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="HESO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="LOAIHINHKIEMTRA_CT_DIEMMON" Member="CT_DIEMMONs" ThisKey="MALHKT" OtherKey="MALHKT" Type="CT_DIEMMON" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LOAINGUOIDUNG" Member="LOAINGUOIDUNGs">
+    <Type Name="LOAINGUOIDUNG">
+      <Column Name="MALND" Type="System.String" DbType="Char(6) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TENLOAIND" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="LOAINGUOIDUNG_NGUOIDUNG" Member="NGUOIDUNGs" ThisKey="MALND" OtherKey="MALND" Type="NGUOIDUNG" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LOP" Member="LOPs">
+    <Type Name="LOP">
+      <Column Name="MALOP" Type="System.String" DbType="Char(5) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TENLOP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MAKHOI" Type="System.String" DbType="Char(6)" CanBeNull="true" />
+      <Column Name="SISO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="LOP_BAOCAOTONGKETHK" Member="BAOCAOTONGKETHKs" ThisKey="MALOP" OtherKey="MALOP" Type="BAOCAOTONGKETHK" />
+      <Association Name="LOP_CT_BCTKMON" Member="CT_BCTKMONs" ThisKey="MALOP" OtherKey="MALOP" Type="CT_BCTKMON" />
+      <Association Name="LOP_QUATRINHHOC" Member="QUATRINHHOCs" ThisKey="MALOP" OtherKey="MALOP" Type="QUATRINHHOC" />
+      <Association Name="KHOILOP_LOP" Member="KHOILOP" ThisKey="MAKHOI" OtherKey="MAKHOI" Type="KHOILOP" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MONHOC" Member="MONHOCs">
+    <Type Name="MONHOC">
+      <Column Name="MAMONHOC" Type="System.String" DbType="Char(4) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TENMONHOC" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="MONHOC_BANGDIEMMON" Member="BANGDIEMMONs" ThisKey="MAMONHOC" OtherKey="MAMONHOC" Type="BANGDIEMMON" />
+      <Association Name="MONHOC_BAOCAOTONGKETMON" Member="BAOCAOTONGKETMONs" ThisKey="MAMONHOC" OtherKey="MAMONHOC" Type="BAOCAOTONGKETMON" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NAMHOC" Member="NAMHOCs">
+    <Type Name="NAMHOC">
+      <Column Name="MANAMHOC" Type="System.String" DbType="Char(4) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TENNAMHOC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="NAM1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NAM2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="NAMHOC_KHOILOP" Member="KHOILOPs" ThisKey="MANAMHOC" OtherKey="MANAM" Type="KHOILOP" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NGUOIDUNG" Member="NGUOIDUNGs">
+    <Type Name="NGUOIDUNG">
+      <Column Name="MAND" Type="System.String" DbType="Char(6) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TENDANGNHAP" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TENNGUOIDUNG" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MATKHAU" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="MALND" Type="System.String" DbType="Char(6)" CanBeNull="true" />
+      <Association Name="LOAINGUOIDUNG_NGUOIDUNG" Member="LOAINGUOIDUNG" ThisKey="MALND" OtherKey="MALND" Type="LOAINGUOIDUNG" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.QUATRINHHOC" Member="QUATRINHHOCs">
+    <Type Name="QUATRINHHOC">
+      <Column Name="MAQTHOC" Type="System.String" DbType="Char(6) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MAHS" Type="System.String" DbType="Char(5)" CanBeNull="true" />
+      <Column Name="MALOP" Type="System.String" DbType="Char(5)" CanBeNull="true" />
+      <Column Name="MAHK" Type="System.String" DbType="Char(4)" CanBeNull="true" />
+      <Column Name="DIEMTBHK" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Association Name="QUATRINHHOC_BANGDIEMMON" Member="BANGDIEMMONs" ThisKey="MAQTHOC" OtherKey="MAQTHOC" Type="BANGDIEMMON" />
+      <Association Name="HOCKY_QUATRINHHOC" Member="HOCKY" ThisKey="MAHK" OtherKey="MAHK" Type="HOCKY" IsForeignKey="true" />
+      <Association Name="HOCSINH_QUATRINHHOC" Member="HOCSINH" ThisKey="MAHS" OtherKey="MAHS" Type="HOCSINH" IsForeignKey="true" />
+      <Association Name="LOP_QUATRINHHOC" Member="LOP" ThisKey="MALOP" OtherKey="MALOP" Type="LOP" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.sp_LayBaoCaoTongKetHocKy" Method="sp_LayBaoCaoTongKetHocKy">
+    <Parameter Name="mahocky" Type="System.String" DbType="Char(4)" />
+    <Parameter Name="manamhoc" Type="System.String" DbType="Char(4)" />
+    <ElementType Name="sp_LayBaoCaoTongKetHocKyResult">
+      <Column Name="TENLOP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SISO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SOLUONGDAT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TYLE" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_XoaQuaTrinhHoc" Method="sp_XoaQuaTrinhHoc">
+    <Parameter Name="mahs" Type="System.String" DbType="Char(5)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.sp_LayBaoCaoTongKetMon" Method="sp_LayBaoCaoTongKetMon">
+    <Parameter Name="mamonhoc" Type="System.String" DbType="Char(4)" />
+    <Parameter Name="mahocky" Type="System.String" DbType="Char(4)" />
+    <Parameter Name="manamhoc" Type="System.String" DbType="Char(4)" />
+    <ElementType Name="sp_LayBaoCaoTongKetMonResult">
+      <Column Name="TENLOP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SISO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SOLUONGDAT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TYLE" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_LayDanhSachHocSinhChuaPhanLop" Method="sp_LayDanhSachHocSinhChuaPhanLop">
+    <ElementType Name="sp_LayDanhSachHocSinhChuaPhanLopResult">
+      <Column Name="MAHS" Type="System.String" DbType="Char(5) NOT NULL" CanBeNull="false" />
+      <Column Name="HOTEN" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_LayDiemChiTietHocSinh" Method="sp_LayDiemChiTietHocSinh">
+    <Parameter Name="mahs" Type="System.String" DbType="Char(5)" />
+    <Parameter Name="mahocky" Type="System.String" DbType="Char(4)" />
+    <Parameter Name="manamhoc" Type="System.String" DbType="Char(4)" />
+    <ElementType Name="sp_LayDiemChiTietHocSinhResult">
+      <Column Name="TENMONHOC" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DIEMMIENG" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="DIEM15P" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="DIEM1TIET" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="DIEMTHI" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="DIEMTBHK" Type="System.Single" DbType="Real" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_LayDiemHocSinhTheoLop" Method="sp_LayDiemHocSinhTheoLop">
+    <Parameter Name="malop" Type="System.String" DbType="Char(5)" />
+    <ElementType Name="sp_LayDiemHocSinhTheoLopResult">
+      <Column Name="MAHS" Type="System.String" DbType="Char(5) NOT NULL" CanBeNull="false" />
+      <Column Name="HOTEN" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DIEMTBHK1" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="DIEMTBHK2" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="DIEMCANAM" Type="System.Single" DbType="Real" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_LayDiemMonHocTheoLop" Method="sp_LayDiemMonHocTheoLop">
+    <Parameter Name="malop" Type="System.String" DbType="Char(5)" />
+    <Parameter Name="mahocky" Type="System.String" DbType="Char(4)" />
+    <Parameter Name="mamonhoc" Type="System.String" DbType="Char(4)" />
+    <ElementType Name="sp_LayDiemMonHocTheoLopResult">
+      <Column Name="MAHS" Type="System.String" DbType="Char(5) NOT NULL" CanBeNull="false" />
+      <Column Name="HOTEN" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DIEMMIENG" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="DIEM15P" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="DIEM1TIET" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="DIEMTHI" Type="System.Single" DbType="Real" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_LayDSHSDaPhanLop" Method="sp_LayDSHSDaPhanLop">
+    <ElementType Name="sp_LayDSHSDaPhanLopResult">
+      <Column Name="MAHS" Type="System.String" DbType="Char(5) NOT NULL" CanBeNull="false" />
+      <Column Name="HOTEN" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_LayHocSinhTheoLop" Method="sp_LayHocSinhTheoLop">
+    <Parameter Name="malop" Type="System.String" DbType="Char(5)" />
+    <Parameter Name="mahk" Type="System.String" DbType="Char(4)" />
+    <ElementType Name="sp_LayHocSinhTheoLopResult">
+      <Column Name="MAHS" Type="System.String" DbType="Char(5) NOT NULL" CanBeNull="false" />
+      <Column Name="HOTEN" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GIOITINH" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NGAYSINH" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DIACHI" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="EMAIL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_LayLopTheoNamHoc" Method="sp_LayLopTheoNamHoc">
+    <Parameter Name="manamhoc" Type="System.String" DbType="Char(4)" />
+    <ElementType Name="sp_LayLopTheoNamHocResult">
+      <Column Name="TENNAMHOC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MAKHOI" Type="System.String" DbType="Char(6) NOT NULL" CanBeNull="false" />
+      <Column Name="MALOP" Type="System.String" DbType="Char(5) NOT NULL" CanBeNull="false" />
+      <Column Name="TENLOP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="TENKHOI" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SISO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_LayNamHocHienTai" Method="sp_LayNamHocHienTai">
+    <ElementType Name="sp_LayNamHocHienTaiResult">
+      <Column Name="MANAMHOC" Type="System.String" DbType="Char(4) NOT NULL" CanBeNull="false" />
+      <Column Name="TENNAMHOC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="NAM1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NAM2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_LayNamHocTheoMaHS" Method="sp_LayNamHocTheoMaHS">
+    <Parameter Name="mahs" Type="System.String" DbType="Char(5)" />
+    <ElementType Name="sp_LayNamHocTheoMaHSResult">
+      <Column Name="MANAMHOC" Type="System.String" DbType="Char(4) NOT NULL" CanBeNull="false" />
+      <Column Name="TENNAMHOC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_LayQTHCuaHocSinh" Method="sp_LayQTHCuaHocSinh">
+    <Parameter Name="mahs" Type="System.String" DbType="Char(5)" />
+    <ElementType Name="sp_LayQTHCuaHocSinhResult">
+      <Column Name="TENNAMHOC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TENHOCKY" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="TENLOP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DIEMTBHK" Type="System.Single" DbType="Real" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_LuuQuyDinh" Method="sp_LuuQuyDinh">
+    <Parameter Name="tuoitoithieu" Type="System.Double" DbType="Float" />
+    <Parameter Name="tuoitoida" Type="System.Double" DbType="Float" />
+    <Parameter Name="sisotoida" Type="System.Double" DbType="Float" />
+    <Parameter Name="diemtoithieu" Type="System.Double" DbType="Float" />
+    <Parameter Name="diemtoida" Type="System.Double" DbType="Float" />
+    <Parameter Name="diemdatmon" Type="System.Double" DbType="Float" />
+    <Parameter Name="diemdat" Type="System.Double" DbType="Float" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.sp_SuaDiem" Method="sp_SuaDiem">
+    <Parameter Name="mahs" Type="System.String" DbType="Char(5)" />
+    <Parameter Name="mamon" Type="System.String" DbType="Char(4)" />
+    <Parameter Name="mahocky" Type="System.String" DbType="Char(4)" />
+    <Parameter Name="malop" Type="System.String" DbType="Char(5)" />
+    <Parameter Name="mieng" Type="System.Double" DbType="Float" />
+    <Parameter Name="diem15p" Type="System.Double" DbType="Float" />
+    <Parameter Name="diem1tiet" Type="System.Double" DbType="Float" />
+    <Parameter Name="diemthi" Type="System.Double" DbType="Float" />
+    <ElementType Name="sp_SuaDiemResult">
+      <Column Name="MABANGDIEMMON" Type="System.String" DbType="Char(7) NOT NULL" CanBeNull="false" />
+      <Column Name="MALHKT" Type="System.String" DbType="Char(6) NOT NULL" CanBeNull="false" />
+      <Column Name="DIEM" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="MABANGDIEMMON1" Type="System.String" DbType="Char(7) NOT NULL" CanBeNull="false" />
+      <Column Name="MAQTHOC" Type="System.String" DbType="Char(6)" CanBeNull="true" />
+      <Column Name="MAMONHOC" Type="System.String" DbType="Char(4)" CanBeNull="true" />
+      <Column Name="DIEMTB" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="MAQTHOC1" Type="System.String" DbType="Char(6) NOT NULL" CanBeNull="false" />
+      <Column Name="MAHS" Type="System.String" DbType="Char(5)" CanBeNull="true" />
+      <Column Name="MALOP" Type="System.String" DbType="Char(5)" CanBeNull="true" />
+      <Column Name="MAHK" Type="System.String" DbType="Char(4)" CanBeNull="true" />
+      <Column Name="DIEMTBHK" Type="System.Single" DbType="Real" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_ThemNamHoc" Method="sp_ThemNamHoc">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.sp_ThemNguoiDung" Method="sp_ThemNguoiDung">
+    <Parameter Name="tendangnhap" Type="System.String" DbType="Char(50)" />
+    <Parameter Name="tennguoidung" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="matkhau" Type="System.String" DbType="Char(20)" />
+    <Parameter Name="loainguoidung" Type="System.String" DbType="Char(6)" />
+    <ElementType Name="sp_ThemNguoiDungResult">
+      <Column Name="MAND" Type="System.String" DbType="Char(6) NOT NULL" CanBeNull="false" />
+      <Column Name="TENDANGNHAP" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TENNGUOIDUNG" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MATKHAU" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="MALND" Type="System.String" DbType="Char(6)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_ThemQTH" Method="sp_ThemQTH">
+    <Parameter Name="mahs" Type="System.String" DbType="Char(6)" />
+    <Parameter Name="malop" Type="System.String" DbType="Char(5)" />
+    <ElementType Name="sp_ThemQTHResult">
+      <Column Name="MAQTHOC" Type="System.String" DbType="Char(6) NOT NULL" CanBeNull="false" />
+      <Column Name="MAHS" Type="System.String" DbType="Char(5)" CanBeNull="true" />
+      <Column Name="MALOP" Type="System.String" DbType="Char(5)" CanBeNull="true" />
+      <Column Name="MAHK" Type="System.String" DbType="Char(4)" CanBeNull="true" />
+      <Column Name="DIEMTBHK" Type="System.Single" DbType="Real" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_ThemQTH1HocKy" Method="sp_ThemQTH1HocKy">
+    <Parameter Name="mahs" Type="System.String" DbType="Char(6)" />
+    <Parameter Name="malop" Type="System.String" DbType="Char(5)" />
+    <Parameter Name="mahk" Type="System.String" DbType="Char(4)" />
+    <ElementType Name="sp_ThemQTH1HocKyResult">
+      <Column Name="MAQTHOC" Type="System.String" DbType="Char(6) NOT NULL" CanBeNull="false" />
+      <Column Name="MAHS" Type="System.String" DbType="Char(5)" CanBeNull="true" />
+      <Column Name="MALOP" Type="System.String" DbType="Char(5)" CanBeNull="true" />
+      <Column Name="MAHK" Type="System.String" DbType="Char(4)" CanBeNull="true" />
+      <Column Name="DIEMTBHK" Type="System.Single" DbType="Real" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_TimHSTheoMaHS" Method="sp_TimHSTheoMaHS">
+    <Parameter Name="s" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="sp_TimHSTheoMaHSResult">
+      <Column Name="MAHS" Type="System.String" DbType="Char(5) NOT NULL" CanBeNull="false" />
+      <Column Name="HOTEN" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GIOITINH" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NGAYSINH" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DIACHI" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="EMAIL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ANH" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_TimHSTheoTen" Method="sp_TimHSTheoTen">
+    <Parameter Name="s" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="sp_TimHSTheoTenResult">
+      <Column Name="MAHS" Type="System.String" DbType="Char(5) NOT NULL" CanBeNull="false" />
+      <Column Name="HOTEN" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GIOITINH" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NGAYSINH" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DIACHI" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="EMAIL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ANH" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_TimLopTheoMaLop" Method="sp_TimLopTheoMaLop">
+    <Parameter Name="s" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="sp_TimLopTheoMaLopResult">
+      <Column Name="TENNAMHOC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MAKHOI" Type="System.String" DbType="Char(6) NOT NULL" CanBeNull="false" />
+      <Column Name="MALOP" Type="System.String" DbType="Char(5) NOT NULL" CanBeNull="false" />
+      <Column Name="TENLOP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="TENKHOI" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SISO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_TimLopTheoTenLop" Method="sp_TimLopTheoTenLop">
+    <Parameter Name="s" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="sp_TimLopTheoTenLopResult">
+      <Column Name="TENNAMHOC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MAKHOI" Type="System.String" DbType="Char(6) NOT NULL" CanBeNull="false" />
+      <Column Name="MALOP" Type="System.String" DbType="Char(5) NOT NULL" CanBeNull="false" />
+      <Column Name="TENLOP" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="TENKHOI" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SISO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_XoaHocSinh" Method="sp_XoaHocSinh">
+    <Parameter Name="mahs" Type="System.String" DbType="Char(5)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.sp_XoaLop" Method="sp_XoaLop">
+    <Parameter Name="malop" Type="System.String" DbType="Char(5)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.sp_XoaMonHoc" Method="sp_XoaMonHoc">
+    <Parameter Name="mamonhoc" Type="System.String" DbType="Char(4)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.sp_XoaNamHoc" Method="sp_XoaNamHoc">
+    <Parameter Name="manamhoc" Type="System.String" DbType="Char(4)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.AUTO_IDBCTKM" Method="AUTO_IDBCTKM" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="dbo.func_LayDiemTongKetMonHoc" Method="func_LayDiemTongKetMonHoc" IsComposable="true">
+    <Parameter Name="mahs" Type="System.String" DbType="Char(5)" />
+    <Parameter Name="mamonhoc" Type="System.String" DbType="Char(4)" />
+    <Parameter Name="mahocky" Type="System.String" DbType="Char(4)" />
+    <Parameter Name="manamhoc" Type="System.String" DbType="Char(4)" />
+    <Return Type="System.Double" />
+  </Function>
+  <Function Name="dbo.AUTO_IDBDM" Method="AUTO_IDBDM" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="dbo.AUTO_IDHK" Method="AUTO_IDHK" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="dbo.AUTO_IDHS" Method="AUTO_IDHS" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="dbo.AUTO_IDKHOI" Method="AUTO_IDKHOI" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="dbo.AUTO_IDLHKT" Method="AUTO_IDLHKT" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="dbo.AUTO_IDLOP" Method="AUTO_IDLOP" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="dbo.AUTO_IDMONHOC" Method="AUTO_IDMONHOC" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="dbo.AUTO_IDNAMHOC" Method="AUTO_IDNAMHOC" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="dbo.AUTO_IDNGUOIDUNG" Method="AUTO_IDNGUOIDUNG" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="dbo.AUTO_IDQTH" Method="AUTO_IDQTH" IsComposable="true">
+    <Return Type="System.String" />
+  </Function>
+  <Function Name="dbo.func_LayDiemTongKetHocKy" Method="func_LayDiemTongKetHocKy" IsComposable="true">
+    <Parameter Name="mahs" Type="System.String" DbType="Char(5)" />
+    <Parameter Name="mahocky" Type="System.String" DbType="Char(4)" />
+    <Parameter Name="manamhoc" Type="System.String" DbType="Char(4)" />
+    <Return Type="System.Double" />
+  </Function>
+</Database>
