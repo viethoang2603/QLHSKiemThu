@@ -12,12 +12,6 @@ namespace NMCNPM_QLHS.TEST
     class NGUOIDUNGTEST
     {
 
-        private static readonly object[] _sourceLists =
-        {
-                 new object[] {new List<int> {1}},   //case 1
-                 new object[] {new List<int> {1, 2}} //case 2
-         };
-        private List<string> tendangnhap = new List<string> { "admin", "bgh1", "gvu1", "gvien1" };
         [SetUp]
         public void Setup()
         {
