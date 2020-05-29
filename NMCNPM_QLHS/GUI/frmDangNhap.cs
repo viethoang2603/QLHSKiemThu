@@ -38,7 +38,6 @@ namespace NMCNPM_QLHS.GUI
                 frmManHinhChinh frm = new frmManHinhChinh(tenDangNhap);
                 this.Hide();
                 frm.Show();
-
             }
             else
             {
