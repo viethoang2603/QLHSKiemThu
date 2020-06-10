@@ -8,17 +8,18 @@ namespace NMCNPM_QLHS.DAL
 {
     class NGUOIDUNG_DAL
     {
-
-
         public static bool KiemTraTonTai(string tendangnhap)
         {
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
+                var x = db.NGUOIDUNGs.FirstOrDefault(u => u.TENDANGNHAP == tendangnhap);
                 if (db.NGUOIDUNGs.Any(u => u.TENDANGNHAP == tendangnhap))
                     return true;
+                
                 return false;
             }
         }
+
         public static bool DangNhap(string tendangnhap, string matkhau)
         {
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
@@ -36,6 +37,7 @@ namespace NMCNPM_QLHS.DAL
                 }
             }
         }
+
         public static string LayTenNguoiDung(string code) {
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {

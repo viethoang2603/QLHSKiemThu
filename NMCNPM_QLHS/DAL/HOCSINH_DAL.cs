@@ -12,7 +12,6 @@ namespace NMCNPM_QLHS.DAL
 {
     class HOCSINH_DAL
     {
-
         // Thêm học sinh
         public static void Insert(string maHS, string hoTen, string gioiTinh, DateTime ngaySinh, string diaChi, string email, Binary image_binary)
         {

@@ -310,9 +310,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TEST\LOPTEST.cs" />
-    <Compile Include="TEST\NGUOIDUNGTEST.cs" />
-    <Compile Include="TEST\QUATRINHHOCTEST.cs" />
+    <Compile Include="TEST\LoaiNguoiDungTests.cs" />
+    <Compile Include="TEST\LopTests.cs" />
+    <Compile Include="TEST\NamHocTests.cs" />
+    <Compile Include="TEST\NguoiDungTests.cs" />
+    <Compile Include="TEST\QuaTrinhHocTests.cs" />
+    <Compile Include="TEST\ThamSoTests.cs" />
     <Compile Include="Utility.cs" />
     <EmbeddedResource Include="GUI\frmDangNhap.resx">
       <DependentUpon>frmDangNhap.cs</DependentUpon>
