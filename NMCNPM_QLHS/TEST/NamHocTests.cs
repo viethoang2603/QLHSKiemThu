@@ -21,16 +21,6 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [Test]
-        [TestCase("NH02")]
-        public void XoaNamHoc_Xoa_ThanhCong(string maNamHoc)
-        {
-            int preCount = NAMHOC_DAL.LayTatCaNamHoc().Count;
-            NAMHOC_DAL.Delete(maNamHoc);
-            int nextCount = NAMHOC_DAL.LayTatCaNamHoc().Count;
-            Assert.AreEqual(preCount - 1, nextCount);
-        }
-
-        [Test]
         [TestCase("NH01", "HS001")]
         public void LayNamHoc_TheoMaHocSinh_ThanhCong(string maNamHocDauTien, string maHocSinh)
         {

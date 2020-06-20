@@ -17,8 +17,6 @@ namespace NMCNPM_QLHS.TEST
         List<BAOCAOTONGKETHK> baoCaoTKHKys = null;
         List<CT_BCTKMON> ct_BaoCaoTKMons = null;
         LOP deletedLop = null;
-        string deletedLopCode = "LOP02";
-        System.Data.Linq.Table<LOP> lops = null;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
@@ -26,7 +24,14 @@ namespace NMCNPM_QLHS.TEST
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 deletedLop = db.LOPs.SingleOrDefault(lop => lop.MALOP == deletedLopCode);
-                qths = db.QUATRINHHOCs.Where(x => x.MALOP == deletedLopCode).ToList();
+                var hocSinhs = db.QUATRINHHOCs.Where(x => x.MALOP == deletedLopCode).Select(qth => qth.HOCSINH).Distinct().ToList();
+
+                qths = new List<QUATRINHHOC>();
+                for (int i = 0; i < hocSinhs.Count; ++i)
+                {
+                    var y = db.QUATRINHHOCs.Where(qth => qth.MAHS == hocSinhs[i].MAHS);
+                    qths.AddRange(y);
+                }
                 bdms = new List<BANGDIEMMON>();
                 ct_diemMons = new List<CT_DIEMMON>();
                 foreach (var qth in qths)
@@ -51,6 +56,7 @@ namespace NMCNPM_QLHS.TEST
             LOP_DAL.Insert(maLop, tenLop, maKhoi);
         }
 
+        string deletedLopCode = "LOP02";
         [Test]
         [TestCase("LOP02")]
         public void Lop_XoaLop_ThanhCong(string maLop)
@@ -67,7 +73,6 @@ namespace NMCNPM_QLHS.TEST
                 Assert.IsFalse(bctkMonExist);
                 Assert.IsFalse(qthsExist);
             }
-            Assert.IsTrue(true);
         }
 
         [Test]
