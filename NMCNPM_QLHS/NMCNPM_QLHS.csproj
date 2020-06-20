@@ -315,6 +315,7 @@
     <Compile Include="TEST\NamHocTests.cs" />
     <Compile Include="TEST\NguoiDungTests.cs" />
     <Compile Include="TEST\QuaTrinhHocTests.cs" />
+    <Compile Include="TEST\RecoveryClass.cs" />
     <Compile Include="TEST\ThamSoTests.cs" />
     <Compile Include="Utility.cs" />
     <EmbeddedResource Include="GUI\frmDangNhap.resx">

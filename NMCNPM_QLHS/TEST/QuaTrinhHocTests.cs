@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NMCNPM_QLHS.DAL;
 using NUnit.Framework;
-                                        //DONE
+//DONE
 namespace NMCNPM_QLHS.TEST
 {
     [TestFixture]
@@ -40,12 +40,12 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [Test]
-        [TestCase("HS001", "LOP01", "HK02", "QTH051", 11, 4)]
-        public void QuaTrinhHoc_LuuQuaTrinhHoc(string maHocSinh, string maLop, string maHocKy, string maQTH, int slMonHoc, int slLoaiHinhKTra)
+        [TestCase("HS001", "LOP01", "HK02", 11, 4)]
+        public void QuaTrinhHoc_LuuQuaTrinhHoc_HK02(string maHocSinh, string maLop, string maHocKy, int slMonHoc, int slLoaiHinhKTra)
         {
             //Luu qua trinh hoc -> 
-            //luu QHT cua N mon hoc -> 
-            //luu N * M loai hinh kiem tra vao CT_DIEMMON
+            //luu QHT cua N mon hoc -> BANGDIEMMON (MaBDM, MaQTH)
+            //luu N * M loai hinh kiem tra vao CT_DIEMMON (MaLHKT, MaDDM)
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 int slBDM = db.BANGDIEMMONs.Count();
