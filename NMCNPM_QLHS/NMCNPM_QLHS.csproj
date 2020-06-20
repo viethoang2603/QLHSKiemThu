@@ -310,6 +310,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TEST\LoaiHinhKiemTraTest.cs" />
     <Compile Include="TEST\LoaiNguoiDungTests.cs" />
     <Compile Include="TEST\LopTests.cs" />
     <Compile Include="TEST\NamHocTests.cs" />
