@@ -11,12 +11,6 @@ namespace NMCNPM_QLHS.TEST
     [TestFixture]
     class LoaiHinhKiemTraTest
     {
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
-        {
-            
-        }
-
         [Test]
         [TestCase(0, "LHKT01", "Điểm Miệng", "1")]
         [TestCase(1, "LHKT02", "Điểm 15p", "1")]
@@ -42,13 +36,23 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [Test]
-        [TestCase("LHKT01", "2")]
-        [TestCase("LHKT01", "3")]
-        [TestCase("LHKT02", "4")]
+        [TestCase("LHKT01", 2)]
+        [TestCase("LHKT01", 3)]
+        [TestCase("LHKT02", 4)]
         public void LHKT_SuaHeSo_ThanhCong(string maLHKT, int heSo)
         {
             LOAIHINHKIEMTRA_DAL.Update(maLHKT, heSo);
             Assert.AreEqual(heSo, LOAIHINHKIEMTRA_DAL.layHeSo(maLHKT));
+        }
+
+        [Test]
+        [TestCase("LHKT01", 0)]
+        [TestCase("LHKT01", -1)]
+        [TestCase("LHKT01", 0.5)]
+        public void LHKT_SuaHeSo_KhongThanhCong(string maLHKT, int heSo)
+        {
+            LOAIHINHKIEMTRA_DAL.Update(maLHKT, heSo);
+            Assert.AreNotEqual(heSo, LOAIHINHKIEMTRA_DAL.layHeSo(maLHKT));
         }
 
         [OneTimeTearDown]

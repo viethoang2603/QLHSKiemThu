@@ -43,6 +43,8 @@ namespace NMCNPM_QLHS.DAL
         // Sửa hệ số LHKT
         public static void Update(string maLHKT, int heSo)
         {
+            if (heSo < 1)
+                return;
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 LOAIHINHKIEMTRA lhkt = db.LOAIHINHKIEMTRAs.Where(a => a.MALHKT == maLHKT).FirstOrDefault();

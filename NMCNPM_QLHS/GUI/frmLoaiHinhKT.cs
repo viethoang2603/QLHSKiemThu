@@ -100,6 +100,7 @@ namespace NMCNPM_QLHS.GUI
 
         private void bindingNavigatorSaveItem_Click(object sender, EventArgs e)
         {
+            
             string maLHKT;
             int heSo;
             bindingNavigatorHocKy.BindingSource.MoveFirst();
@@ -107,6 +108,11 @@ namespace NMCNPM_QLHS.GUI
             {
                 maLHKT = dgvLHKT.GetFocusedRowCellDisplayText(col_maLHKT);
                 heSo = int.Parse(dgvLHKT.GetFocusedRowCellDisplayText(col_heSo));
+                if(heSo < 1)
+                {
+                    XtraMessageBox.Show("Giá trị hệ số không hợp lệ", "Lỗi!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 LOAIHINHKIEMTRA_BUS.update(maLHKT, heSo);
                 bindingNavigatorHocKy.BindingSource.MoveNext();
             }
