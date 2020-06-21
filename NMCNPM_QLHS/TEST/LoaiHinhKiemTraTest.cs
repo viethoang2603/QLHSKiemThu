@@ -11,11 +11,10 @@ namespace NMCNPM_QLHS.TEST
     [TestFixture]
     class LoaiHinhKiemTraTest
     {
-        List<LOAIHINHKIEMTRA> loaiHinhKiemTras;
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            loaiHinhKiemTras = LOAIHINHKIEMTRA_DAL.LayTatCaLHKT();
+            
         }
 
         [Test]
@@ -25,6 +24,8 @@ namespace NMCNPM_QLHS.TEST
         [TestCase(3, "LHKT04", "Điểm cuối kỳ", "3")]
         public void LHKT_LayTatCa_ThanhCong(int id, string MaLHKT, string TenLHKT, int heSo)
         {
+            List<LOAIHINHKIEMTRA> loaiHinhKiemTras;
+            loaiHinhKiemTras = LOAIHINHKIEMTRA_DAL.LayTatCaLHKT();
             Assert.AreEqual(loaiHinhKiemTras[id].MALHKT, MaLHKT);
             Assert.AreEqual(loaiHinhKiemTras[id].TENLHKT, TenLHKT);
             Assert.AreEqual(loaiHinhKiemTras[id].HESO, heSo);
@@ -48,6 +49,15 @@ namespace NMCNPM_QLHS.TEST
         {
             LOAIHINHKIEMTRA_DAL.Update(maLHKT, heSo);
             Assert.AreEqual(heSo, LOAIHINHKIEMTRA_DAL.layHeSo(maLHKT));
+        }
+
+        [OneTimeTearDown]
+        public void TearDown()
+        {
+            LOAIHINHKIEMTRA_DAL.Update("LHKT01", 1);
+            LOAIHINHKIEMTRA_DAL.Update("LHKT02", 1);
+            LOAIHINHKIEMTRA_DAL.Update("LHKT03", 2);
+            LOAIHINHKIEMTRA_DAL.Update("LHKT04", 3);
         }
     }
 }
