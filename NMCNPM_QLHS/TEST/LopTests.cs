@@ -18,11 +18,15 @@ namespace NMCNPM_QLHS.TEST
         List<CT_BCTKMON> ct_BaoCaoTKMons = null;
         LOP deletedLop = null;
 
+        bool needRecovery = false;
+
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
+                needRecovery = false;
+                //RecoveryClass.CachedAll(db, true, true, true, true, true, true);
                 deletedLop = db.LOPs.SingleOrDefault(lop => lop.MALOP == deletedLopCode);
                 var hocSinhs = db.QUATRINHHOCs.Where(x => x.MALOP == deletedLopCode).Select(qth => qth.HOCSINH).Distinct().ToList();
 
@@ -53,7 +57,10 @@ namespace NMCNPM_QLHS.TEST
         [TestCase("LOP19", "12/4", "KHOI03")]
         public void Lop_ThemLop_ThanhCong(string maLop, string tenLop, string maKhoi)
         {
-            LOP_DAL.Insert(maLop, tenLop, maKhoi);
+            using (SQL_QLHSDataContext db = new SQL_QLHSDataContext()) {
+                LOP_DAL.Insert(maLop, tenLop, maKhoi);
+                Assert.IsTrue(db.LOPs.Any(lop => lop.MALOP == maLop));
+            }
         }
 
         string deletedLopCode = "LOP02";
@@ -61,17 +68,23 @@ namespace NMCNPM_QLHS.TEST
         [TestCase("LOP02")]
         public void Lop_XoaLop_ThanhCong(string maLop)
         {
+            needRecovery = true;
             deletedLopCode = maLop;
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
-                LOP_DAL.Delete(maLop);
-                bool bctkHKExist = db.BAOCAOTONGKETHKs.Any(bc => bc.MALOP == maLop);
-                bool bctkMonExist = db.CT_BCTKMONs.Any(bc => bc.MALOP == maLop);
-                bool qthsExist = db.QUATRINHHOCs.Any(bc => bc.MALOP == maLop);
+                int deletedQthsNumber = db.QUATRINHHOCs.Count(qth => qth.MALOP == maLop);
+                int deletedBctkHocKy = db.BAOCAOTONGKETHKs.Count(bc => bc.MALOP == maLop);
+                int deletedct_tkMon = db.CT_BCTKMONs.Count(bc => bc.MALOP == maLop);
 
-                Assert.IsFalse(bctkHKExist);
-                Assert.IsFalse(bctkMonExist);
-                Assert.IsFalse(qthsExist);
+                int allQths = db.QUATRINHHOCs.Count();
+                int allBcTkHocKys = db.BAOCAOTONGKETHKs.Count();
+                int allCtBcTkMons = db.CT_BCTKMONs.Count();
+
+                LOP_DAL.Delete(maLop);
+
+                Assert.AreEqual(db.BAOCAOTONGKETHKs.Count(), allBcTkHocKys - deletedBctkHocKy);
+                Assert.AreEqual(db.CT_BCTKMONs.Count(), allCtBcTkMons - deletedct_tkMon);
+                Assert.AreEqual(db.QUATRINHHOCs.Count(), allQths - deletedQthsNumber);
             }
         }
 
@@ -89,70 +102,49 @@ namespace NMCNPM_QLHS.TEST
         public void OneTimeTearDown()
         {
             LOP_DAL.Delete("LOP19");
-            if (qths != null)
+            if (needRecovery)
             {
-                using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
+                RecoveryClass.DisableAllTrigger();
+                try
                 {
-                    db.LOPs.InsertOnSubmit(deletedLop.Clone());
 
-                    for (int i = 0; i < qths.Count; ++i)
+                    using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
                     {
-                        var exists = db.QUATRINHHOCs.SingleOrDefault(qth => qth.MAQTHOC == qths[i].MAQTHOC);
-                        if (exists != null)
-                            exists.OverwritedBy(qths[i]);
-                        else
-                            db.QUATRINHHOCs.InsertOnSubmit(qths[i].Clone());
+                        //RecoveryClass.RecoverWithCached(db);
+                        db.LOPs.InsertOnSubmit(deletedLop.Clone());
+                        db.SubmitChanges();
+
+                        for (int i = 0; i < qths.Count; ++i)
+                            qths[i].InsertOrUpdate(db);
+
+                        db.SubmitChanges();
+
+                        for (int i = 0; i < bdms.Count; ++i)
+                            bdms[i].InsertOrUpdate(db);
+
+                        db.SubmitChanges();
+
+                        for (int i = 0; i < ct_diemMons.Count; ++i)
+                            ct_diemMons[i].InsertOrUpdate(db);
+
+                        db.SubmitChanges();
+
+                        for (int i = 0; i < ct_BaoCaoTKMons.Count; ++i)
+                            ct_BaoCaoTKMons[i].InsertOrUpdate(db);
+
+                        db.SubmitChanges();
+
+                        for (int i = 0; i < baoCaoTKHKys.Count; ++i)
+                            baoCaoTKHKys[i].InsertOrUpdate(db);
+
+                        db.SubmitChanges();
+                        //array name, db.TEN, Primary key
                     }
-
-                    db.SubmitChanges();
-
-                    for (int i = 0; i < bdms.Count; ++i)
-                    {
-                        var exists = db.BANGDIEMMONs.SingleOrDefault(record => record.MABANGDIEMMON == bdms[i].MABANGDIEMMON);
-                        if (exists != null)
-                            exists.OverwritedBy(bdms[i]);
-                        else
-                            db.BANGDIEMMONs.InsertOnSubmit(bdms[i].Clone());
-                    }
-
-                    db.SubmitChanges();
-
-                    for (int i = 0; i < ct_diemMons.Count; ++i)
-                    {
-                        var exists = db.CT_DIEMMONs.SingleOrDefault(record => (record.MABANGDIEMMON == ct_diemMons[i].MABANGDIEMMON && record.MALHKT == ct_diemMons[i].MALHKT));
-
-                        if (exists != null)
-                            exists.OverwritedBy(ct_diemMons[i]);
-                        else
-                            db.CT_DIEMMONs.InsertOnSubmit(ct_diemMons[i].Clone());
-                    }
-
-                    db.SubmitChanges();
-
-                    for (int i = 0; i < ct_BaoCaoTKMons.Count; ++i)
-                    {
-                        var exists = db.CT_BCTKMONs.SingleOrDefault(record => (record.MABCTKMON == ct_BaoCaoTKMons[i].MABCTKMON && record.MALOP == ct_BaoCaoTKMons[i].MALOP));
-
-                        if (exists != null)
-                            exists.OverwritedBy(ct_BaoCaoTKMons[i]);
-                        else
-                            db.CT_BCTKMONs.InsertOnSubmit(ct_BaoCaoTKMons[i].Clone());
-                    }
-
-                    db.SubmitChanges();
-
-                    for (int i = 0; i < baoCaoTKHKys.Count; ++i)
-                    {
-                        var exists = db.BAOCAOTONGKETHKs.SingleOrDefault(record => (record.MAHK == baoCaoTKHKys[i].MAHK && record.MALOP == baoCaoTKHKys[i].MALOP));
-
-                        if (exists != null)
-                            exists.OverwritedBy(baoCaoTKHKys[i]);
-                        else
-                            db.BAOCAOTONGKETHKs.InsertOnSubmit(baoCaoTKHKys[i].Clone());
-                    }
-
-                    db.SubmitChanges();
-                    //array name, db.TEN, Primary key
+                }
+                catch (Exception e) { }
+                finally
+                {
+                    RecoveryClass.EnableAllTrigger();
                 }
             }
         }
