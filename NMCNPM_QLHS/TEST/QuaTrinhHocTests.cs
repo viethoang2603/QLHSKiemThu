@@ -17,10 +17,6 @@ namespace NMCNPM_QLHS.TEST
         public void QuaTrinhHoc_KiemTraTonTai(string maHocSinh, string maLop, string maHocKy, bool result)
         {
             Assert.AreEqual(QUATRINHHOC_DAL.KiemTraTonTai(maHocSinh, maLop, maHocKy), result);
-            var x = new string[2, 4] {
-                { "2017-2018", "Học kỳ 1", "10/3", "8" } ,
-                { "2017-2018", "Học kỳ 2", "10/2", "8.7" },
-            };
         }
 
         [Test]

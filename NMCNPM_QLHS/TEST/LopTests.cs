@@ -23,12 +23,16 @@ namespace NMCNPM_QLHS.TEST
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
+            
+        }
+
+        void BackupForDeleted(string maLop) {
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
-                needRecovery = false;
+                needRecovery = true;
                 //RecoveryClass.CachedAll(db, true, true, true, true, true, true);
-                deletedLop = db.LOPs.SingleOrDefault(lop => lop.MALOP == deletedLopCode);
-                var hocSinhs = db.QUATRINHHOCs.Where(x => x.MALOP == deletedLopCode).Select(qth => qth.HOCSINH).Distinct().ToList();
+                deletedLop = db.LOPs.SingleOrDefault(lop => lop.MALOP == maLop);
+                var hocSinhs = db.QUATRINHHOCs.Where(x => x.MALOP == maLop).Select(qth => qth.HOCSINH).Distinct().ToList();
 
                 qths = new List<QUATRINHHOC>();
                 for (int i = 0; i < hocSinhs.Count; ++i)
@@ -48,8 +52,8 @@ namespace NMCNPM_QLHS.TEST
                     }
                     bdms.AddRange(newBDMs);
                 }
-                baoCaoTKHKys = db.BAOCAOTONGKETHKs.Where(bc => bc.MALOP == deletedLopCode).ToList();
-                ct_BaoCaoTKMons = db.CT_BCTKMONs.Where(bc => bc.MALOP == deletedLopCode).ToList();
+                baoCaoTKHKys = db.BAOCAOTONGKETHKs.Where(bc => bc.MALOP == maLop).ToList();
+                ct_BaoCaoTKMons = db.CT_BCTKMONs.Where(bc => bc.MALOP == maLop).ToList();
             }
         }
 
@@ -63,13 +67,13 @@ namespace NMCNPM_QLHS.TEST
             }
         }
 
-        string deletedLopCode = "LOP02";
         [Test]
+        [TestCase("LOP01")]
         [TestCase("LOP02")]
+        [TestCase("LOP03")]
         public void Lop_XoaLop_ThanhCong(string maLop)
         {
-            needRecovery = true;
-            deletedLopCode = maLop;
+            BackupForDeleted(maLop);
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 int deletedQthsNumber = db.QUATRINHHOCs.Count(qth => qth.MALOP == maLop);
@@ -82,9 +86,9 @@ namespace NMCNPM_QLHS.TEST
 
                 LOP_DAL.Delete(maLop);
 
-                Assert.AreEqual(db.BAOCAOTONGKETHKs.Count(), allBcTkHocKys - deletedBctkHocKy);
-                Assert.AreEqual(db.CT_BCTKMONs.Count(), allCtBcTkMons - deletedct_tkMon);
-                Assert.AreEqual(db.QUATRINHHOCs.Count(), allQths - deletedQthsNumber);
+                Assert.AreEqual(allBcTkHocKys - deletedBctkHocKy, db.BAOCAOTONGKETHKs.Count());
+                Assert.AreEqual(allCtBcTkMons - deletedct_tkMon, db.CT_BCTKMONs.Count());
+                Assert.AreEqual(allQths - deletedQthsNumber, db.QUATRINHHOCs.Count());
             }
         }
 
@@ -97,9 +101,9 @@ namespace NMCNPM_QLHS.TEST
             Assert.AreEqual(result, LOP_DAL.LaySiSoLop(maLop, maHocKy));
         }
 
-        [OneTimeTearDown]
+        [TearDown]
         //TODO: OPTIMIZE
-        public void OneTimeTearDown()
+        public void TearDown()
         {
             LOP_DAL.Delete("LOP19");
             if (needRecovery)
@@ -107,7 +111,6 @@ namespace NMCNPM_QLHS.TEST
                 RecoveryClass.DisableAllTrigger();
                 try
                 {
-
                     using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
                     {
                         //RecoveryClass.RecoverWithCached(db);
@@ -145,6 +148,7 @@ namespace NMCNPM_QLHS.TEST
                 finally
                 {
                     RecoveryClass.EnableAllTrigger();
+                    needRecovery = false;
                 }
             }
         }

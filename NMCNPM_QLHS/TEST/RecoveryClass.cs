@@ -295,11 +295,5 @@ namespace NMCNPM_QLHS.TEST
                 db.ExecuteCommand("ENABLE TRIGGER ALL ON [dbo].[BANGDIEMMON]");
             }
         }
-
-        public static void InsertOrUpdateList(List<dynamic> list, SQL_QLHSDataContext db)
-        {
-            for (int i = 0; i < list.Count; ++i)
-                list[i].InsertOrUpdate(db);
-        }
     }
 }
