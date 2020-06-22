@@ -17,14 +17,8 @@ namespace NMCNPM_QLHS.TEST
         List<BAOCAOTONGKETHK> baoCaoTKHKys = null;
         List<CT_BCTKMON> ct_BaoCaoTKMons = null;
         LOP deletedLop = null;
-
         bool needRecovery = false;
-
-        [OneTimeSetUp]
-        public void OneTimeSetup()
-        {
-
-        }
+        SQL_QLHSDataContext db;
 
         void BackupForDeleted(string maLop)
         {
@@ -58,57 +52,111 @@ namespace NMCNPM_QLHS.TEST
             }
         }
 
+        [OneTimeSetUp]
+        public void OneTimeSetup()
+        {
+            db = new SQL_QLHSDataContext();
+        }
+
         [Test]
         [TestCase("LOP19", "12/4", "KHOI03")]
         public void ThemLop_KhongTrung_ThanhCong(string maLop, string tenLop, string maKhoi)
         {
-            using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
-            {
-                LOP_DAL.Insert(maLop, tenLop, maKhoi);
-                Assert.IsTrue(db.LOPs.Any(lop => lop.MALOP == maLop));
-            }
+            LOP_DAL.Insert(maLop, tenLop, maKhoi);
+            Assert.IsTrue(db.LOPs.Any(lop => lop.MALOP == maLop));
         }
 
         [Test]
         [TestCase("LOP01", "12/4", "KHOI03")]
-        public void ThemLop_Trung_Failed(string maLop, string tenLop, string maKhoi)
+        public void ThemLop_Trung_DbException(string maLop, string tenLop, string maKhoi)
         {
-            using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
-            {
-                Assert.Throws<System.Data.SqlClient.SqlException>(() => LOP_DAL.Insert(maLop, tenLop, maKhoi));
-            }
+            Assert.Throws<System.Data.SqlClient.SqlException>(() => LOP_DAL.Insert(maLop, tenLop, maKhoi));
+        }
+
+        [Test]
+        [TestCase("LOP20", "12/4", "KHOI100")]
+        public void ThemLop_KhongTonTaiMaKhoi_DbException(string maLop, string tenLop, string maKhoi)
+        {
+            Assert.Throws<System.Data.SqlClient.SqlException>(() => LOP_DAL.Insert(maLop, tenLop, maKhoi));
+        }
+
+        [Test]
+        [TestCase("LOP01", "13/4", "KHOI06")]
+        public void CapNhat_MaKhoiTonTai_Success(string maLop, string tenLop, string maKhoi)
+        {
+            LOP_DAL.Update(maLop, tenLop, maKhoi);
+            LOP lop = db.LOPs.SingleOrDefault(l => l.MALOP == maLop);
+
+            Assert.NotNull(lop);
+            Assert.AreEqual(tenLop, lop.TENLOP);
+            Assert.AreEqual(maKhoi, lop.MAKHOI);
+        }
+
+        [Test]
+        [TestCase("LOP01", "13/4", "KHOI07")]
+        public void CapNhat_MaKhoiKoTonTai_DbException(string maLop, string tenLop, string maKhoi)
+        {
+            //SQLException không tồn tại ForegnKey 
+            Assert.Throws<System.Data.SqlClient.SqlException>(() => LOP_DAL.Update(maLop, tenLop, maKhoi));
+        }
+
+        [Test]
+        [TestCase("LOP91", "13/4", "KHOI07")]
+        public void CapNhat_MaLopKoTonTai_NullException(string maLop, string tenLop, string maKhoi)
+        {
+            //NullException - Không tồn tại lớp
+            Assert.Throws<NullReferenceException>(() => LOP_DAL.Update(maLop, tenLop, maKhoi));
         }
 
         [Test]
         [TestCase("LOP01")]
-        [TestCase("LOP02")]
-        [TestCase("LOP03")]
+        [TestCase("LOP02")] //Vì xóa mã học sinh của quá trình học nên xóa luôn lớp khác -> test fail 
         public void Xoa_TonTai_ThanhCong(string maLop)
         {
             BackupForDeleted(maLop);
-            using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
-            {
-                int deletedQthsNumber = db.QUATRINHHOCs.Count(qth => qth.MALOP == maLop);
-                int deletedBctkHocKy = db.BAOCAOTONGKETHKs.Count(bc => bc.MALOP == maLop);
-                int deletedct_tkMon = db.CT_BCTKMONs.Count(bc => bc.MALOP == maLop);
 
-                int allQths = db.QUATRINHHOCs.Count();
-                int allBcTkHocKys = db.BAOCAOTONGKETHKs.Count();
-                int allCtBcTkMons = db.CT_BCTKMONs.Count();
+            int deletedQthsNumber = db.QUATRINHHOCs.Count(qth => qth.MALOP == maLop);
+            int deletedBctkHocKy = db.BAOCAOTONGKETHKs.Count(bc => bc.MALOP == maLop);
+            int deletedct_tkMon = db.CT_BCTKMONs.Count(bc => bc.MALOP == maLop);
 
-                LOP_DAL.Delete(maLop);
+            int allQths = db.QUATRINHHOCs.Count();
+            int allBcTkHocKys = db.BAOCAOTONGKETHKs.Count();
+            int allCtBcTkMons = db.CT_BCTKMONs.Count();
 
-                Assert.AreEqual(allBcTkHocKys - deletedBctkHocKy, db.BAOCAOTONGKETHKs.Count());
-                Assert.AreEqual(allCtBcTkMons - deletedct_tkMon, db.CT_BCTKMONs.Count());
-                Assert.AreEqual(allQths - deletedQthsNumber, db.QUATRINHHOCs.Count());
-            }
+            LOP_DAL.Delete(maLop);
+
+            Assert.AreEqual(allBcTkHocKys - deletedBctkHocKy, db.BAOCAOTONGKETHKs.Count());
+            Assert.AreEqual(allCtBcTkMons - deletedct_tkMon, db.CT_BCTKMONs.Count());
+            Assert.AreEqual(allQths - deletedQthsNumber, db.QUATRINHHOCs.Count());
+        }
+
+        [Test]
+        [TestCase("LOP91")]
+        public void Xoa_KhongTonTai_SLRecordsXoaBang0(string maLop)
+        {
+            int allQths = db.QUATRINHHOCs.Count();
+            int allBcTkHocKys = db.BAOCAOTONGKETHKs.Count();
+            int allCtBcTkMons = db.CT_BCTKMONs.Count();
+
+            LOP_DAL.Delete(maLop);
+
+            Assert.AreEqual(allBcTkHocKys, db.BAOCAOTONGKETHKs.Count());
+            Assert.AreEqual(allCtBcTkMons, db.CT_BCTKMONs.Count());
+            Assert.AreEqual(allQths, db.QUATRINHHOCs.Count());
         }
 
         [Test]
         [TestCase("LOP01", "HK01", 4)]
         [TestCase("LOP01", "HK02", 1)]
-        [TestCase("LOP02", "HK02", 3)]
         public void LaySiSo_TonTai_ThanhCong(string maLop, string maHocKy, int result)
+        {
+            Assert.AreEqual(result, LOP_DAL.LaySiSoLop(maLop, maHocKy));
+        }
+
+        [Test]
+        [TestCase("LOP91", "HK01", 0)] //Không tồn tại lớp
+        [TestCase("LOP01", "HK91", 0)] //Không tồn tại khối
+        public void LaySiSo_KoTonTai_LuonTraVe0(string maLop, string maHocKy, int result)
         {
             Assert.AreEqual(result, LOP_DAL.LaySiSoLop(maLop, maHocKy));
         }
@@ -118,6 +166,7 @@ namespace NMCNPM_QLHS.TEST
         public void TearDown()
         {
             LOP_DAL.Delete("LOP19");
+
             if (needRecovery)
             {
                 RecoveryClass.DisableAllTrigger();
@@ -156,13 +205,18 @@ namespace NMCNPM_QLHS.TEST
                         //array name, db.TEN, Primary key
                     }
                 }
-                catch (Exception e) { }
+                catch (Exception e)
+                {
+                    e = e;
+                }
                 finally
                 {
                     RecoveryClass.EnableAllTrigger();
                     needRecovery = false;
                 }
             }
+
+            LOP_DAL.Update("LOP01", "10/1", "KHOI01");
         }
     }
 }
