@@ -21,14 +21,14 @@ namespace NMCNPM_QLHS.TEST
         [TestCase("SOLUONGMONHOC", 15)]
         [TestCase("TUOITOIDA", 20)]
         [TestCase("TUOITOITHIEU", 15)]
-        public void ThamSo_Lay_Success(string tenThamSo, int result)
+        public void Lay_DungThamSo_SuccessTraVeInt(string tenThamSo, int result)
         {
             Assert.AreEqual(THAMSO_DAL.LayThamSo(tenThamSo).GIATRI, result);
         }
 
         [Test]
         [TestCase("TUOITUOI", 15)]
-        public void ThamSo_Lay_NullSaiTenThamSo(string tenThamSo, int result)
+        public void Lay_SaiTenThamSo_FailedNull(string tenThamSo, int result)
         {
             var thamSo = THAMSO_DAL.LayThamSo(tenThamSo);
             Assert.AreEqual(null, thamSo);
@@ -36,7 +36,7 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase(10, 50, 20, 1, 100, 60, 60)]
-        public void ThamSo_LuuQuyDinh_Success(
+        public void LuuQuyDinh_DungThuTu_Success(
             double tuoiToiThieu,
             double tuoiToiDa,
             double siSoToiDa,

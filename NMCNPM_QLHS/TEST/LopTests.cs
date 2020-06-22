@@ -23,10 +23,11 @@ namespace NMCNPM_QLHS.TEST
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            
+
         }
 
-        void BackupForDeleted(string maLop) {
+        void BackupForDeleted(string maLop)
+        {
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 needRecovery = true;
@@ -59,11 +60,22 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("LOP19", "12/4", "KHOI03")]
-        public void Lop_ThemLop_ThanhCong(string maLop, string tenLop, string maKhoi)
+        public void ThemLop_KhongTrung_ThanhCong(string maLop, string tenLop, string maKhoi)
         {
-            using (SQL_QLHSDataContext db = new SQL_QLHSDataContext()) {
+            using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
+            {
                 LOP_DAL.Insert(maLop, tenLop, maKhoi);
                 Assert.IsTrue(db.LOPs.Any(lop => lop.MALOP == maLop));
+            }
+        }
+
+        [Test]
+        [TestCase("LOP01", "12/4", "KHOI03")]
+        public void ThemLop_Trung_Failed(string maLop, string tenLop, string maKhoi)
+        {
+            using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
+            {
+                Assert.Throws<System.Data.SqlClient.SqlException>(() => LOP_DAL.Insert(maLop, tenLop, maKhoi));
             }
         }
 
@@ -71,7 +83,7 @@ namespace NMCNPM_QLHS.TEST
         [TestCase("LOP01")]
         [TestCase("LOP02")]
         [TestCase("LOP03")]
-        public void Lop_XoaLop_ThanhCong(string maLop)
+        public void Xoa_TonTai_ThanhCong(string maLop)
         {
             BackupForDeleted(maLop);
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
@@ -96,7 +108,7 @@ namespace NMCNPM_QLHS.TEST
         [TestCase("LOP01", "HK01", 4)]
         [TestCase("LOP01", "HK02", 1)]
         [TestCase("LOP02", "HK02", 3)]
-        public void Lop_LaySiSo_ThanhCong(string maLop, string maHocKy, int result)
+        public void LaySiSo_TonTai_ThanhCong(string maLop, string maHocKy, int result)
         {
             Assert.AreEqual(result, LOP_DAL.LaySiSoLop(maLop, maHocKy));
         }
