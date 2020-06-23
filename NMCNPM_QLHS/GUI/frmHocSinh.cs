@@ -231,10 +231,10 @@ namespace NMCNPM_QLHS.GUI
                 string gioiTinh = cboGioiTinh.Text;
                 //System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern();
                 CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
-                culture.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
+                culture.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
                 culture.DateTimeFormat.LongDatePattern = "dd MMMM, yyyy";
                 Thread.CurrentThread.CurrentCulture = culture;
-                DateTime ngaySinh = DateTime.ParseExact(dtpNgaySinh.Text.ToString(), "dd/MM/yyyy", CultureInfo.CreateSpecificCulture("en-GB"));
+                DateTime ngaySinh = DateTime.ParseExact(dtpNgaySinh.Text.ToString(), "dd-MM-yyyy", CultureInfo.CreateSpecificCulture("en-GB"));
                 string email = txtEmail.Text;
                 if (!Utility.isEmail(email))
                 {
