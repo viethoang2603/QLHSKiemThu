@@ -49,11 +49,25 @@ namespace NMCNPM_QLHS.TEST
         #region Them_Xoa_Test
 
         [Test]
-        [TestCase("NDABC", "phuongle", "Phuong Le", "LND001")]
+        [TestCase("NDABCD", "phuongle", "Phuong Le", "LND001")]
         public void ThemNguoiDung_KhongBiTrung_ThanhCong(string maND, string taikhoan, string ten, string loaiquyen)
         {
             NGUOIDUNG_DAL.insert(maND, ten, loaiquyen, taikhoan);
             Assert.IsTrue(NGUOIDUNG_DAL.KiemTraTonTai(taikhoan));
+        }
+
+        [Test]
+        [TestCase("ND0001", "phuongle", "Phuong Le", "LND001")]
+        public void ThemNguoiDung_BiTrung_DbException(string maND, string taikhoan, string ten, string loaiquyen)
+        {
+            Assert.Throws<System.Data.SqlClient.SqlException>(() => NGUOIDUNG_DAL.insert(maND, ten, loaiquyen, taikhoan));
+        }
+
+        [Test]
+        [TestCase("NDABCD", "phuongle", "Phuong Le", "LND091")]
+        public void ThemNguoiDung_KhongTonTaiLND_DbException(string maND, string taikhoan, string ten, string loaiquyen)
+        {
+            Assert.Throws<System.Data.SqlClient.SqlException>(() => NGUOIDUNG_DAL.insert(maND, ten, loaiquyen, taikhoan));
         }
 
         [Test]
@@ -91,7 +105,7 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [TestCase("ND9848", "unknown")]
-        public void LayTenNguoiDung_KhongTonTai_Unknown(string maNguoiDung, string tenNguoiDung)
+        public void Lay_KhongTonTai_TraVeUnknown(string maNguoiDung, string tenNguoiDung)
         {
             Assert.AreEqual(NGUOIDUNG_DAL.LayTenNguoiDung(maNguoiDung), tenNguoiDung);
         }
@@ -99,8 +113,7 @@ namespace NMCNPM_QLHS.TEST
         [OneTimeTearDown]
         public void TearDown()
         {
-            if (NGUOIDUNG_DAL.KiemTraTonTai("bnvnbvnb"))
-                NGUOIDUNG_DAL.delete("NDABC");
+            NGUOIDUNG_DAL.delete("NDABCD");
             if (!NGUOIDUNG_DAL.KiemTraTonTai("bnvnbvnb"))
                 NGUOIDUNG_DAL.insert("ND0007", " bmbn", "LND004", "bnvnbvnb");
         }

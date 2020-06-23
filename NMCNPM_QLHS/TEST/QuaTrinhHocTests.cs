@@ -13,14 +13,16 @@ namespace NMCNPM_QLHS.TEST
     {
         [Test]
         [TestCase("HS001", "LOP07", "HK01", true)]
-        [TestCase("HS001", "LOP08", "HK01", false)]
-        public void QuaTrinhHoc_KiemTraTonTai(string maHocSinh, string maLop, string maHocKy, bool result)
+        public void KiemTraTonTai_TonTai_True(string maHocSinh, string maLop, string maHocKy, bool result)
         {
             Assert.AreEqual(QUATRINHHOC_DAL.KiemTraTonTai(maHocSinh, maLop, maHocKy), result);
-            var x = new string[2, 4] {
-                { "2017-2018", "Học kỳ 1", "10/3", "8" } ,
-                { "2017-2018", "Học kỳ 2", "10/2", "8.7" },
-            };
+        }
+
+        [Test]
+        [TestCase("HS001", "LOP08", "HK01", false)]
+        public void KiemTraTonTai_KhongTonTai_False(string maHocSinh, string maLop, string maHocKy, bool result)
+        {
+            Assert.AreEqual(QUATRINHHOC_DAL.KiemTraTonTai(maHocSinh, maLop, maHocKy), result);
         }
 
         [Test]
