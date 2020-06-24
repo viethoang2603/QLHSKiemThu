@@ -12,7 +12,7 @@ namespace NMCNPM_QLHS.TEST
     public class HocSinhTest
     {
         [Test]
-        [TestCase("HS111", "testName", "Nam", "22-06-1999", "testAddress", "testEmail@gmail.com")]
+        [TestCase("HS113", "testName", "Nam", "22-06-1999", "testAddress", "testEmail@gmail.com")]
         [TestCase("HS112", "testName2", "Nam", "20-06-1999", "testAddress2", "testEmail2@gmail.com")]
         public void Insert_DuLieuHopLe_Success(string maHS, string hoTen, string gioiTinh, string ngaySinh, string diaChi, string email)
         {
@@ -210,7 +210,7 @@ namespace NMCNPM_QLHS.TEST
             DateTime birthDay2 = DateTime.ParseExact("20-03-1999", "dd-MM-yyyy", CultureInfo.CreateSpecificCulture("en-GB"));
             HOCSINH_DAL.Update("HS001", "Lê Quốc Phương", "Nam", birthDay1, "Quảng bình", "17520000@gm.uit.edu.vn", null);
             HOCSINH_DAL.Update("HS002", "Nguyễn Lê Việt Hoàng", "Nam", birthDay2, "Quế Sơn, Quảng Nam", "17520513@gm.uit.edu.vn", null);
-            HOCSINH_DAL.Delete("HS111");
+            HOCSINH_DAL.Delete("HS113");
             HOCSINH_DAL.Delete("HS112");
         }
     }

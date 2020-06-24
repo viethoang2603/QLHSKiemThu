@@ -173,7 +173,6 @@ namespace NMCNPM_QLHS.TEST
 
             if (needRecovery)
             {
-                RecoveryClass.DisableAllTrigger();
                 try
                 {
                     using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
@@ -181,6 +180,8 @@ namespace NMCNPM_QLHS.TEST
                         //RecoveryClass.RecoverWithCached(db);
                         db.LOPs.InsertOnSubmit(deletedLop.Clone());
                         db.SubmitChanges();
+
+                        RecoveryClass.DisableAllTrigger();
 
                         for (int i = 0; i < qths.Count; ++i)
                             qths[i].InsertOrUpdate(db);
