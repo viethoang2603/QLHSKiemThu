@@ -11,9 +11,7 @@ namespace NMCNPM_QLHS.TEST
         [Test]
         [TestCase("HK01", "NH01", 0, new string[] { "10/1", "", "", "" })]
         [TestCase("HK01", "NH01", 1, new string [] { "10/2", "3", "2", "66.67%" })]
-        [TestCase("HK01", "NH01", 2, new string[] { "10/3", "1", "1", "100%" })]
-        [TestCase("HK02", "NH01", 0, new string[] { "10/1", "4", "0", "0%" })]
-        [TestCase("HK02", "NH01", 1, new string[] { "10/2", "3", "2", "66.67%" })]
+        [TestCase("HK02", "NH02", 2, new string[] { "10/3", "3", "0", "0%" })]
         [TestCase("HK02", "NH01", 2, new string[] { "10/3", "", "", "" })]
         public void LayBaoCaoTongKetHK_TonTaiHKNH_Success(string maHocKy, string maNamHoc, int rowId, string[] rows)
         {
@@ -44,8 +42,7 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [Test]
-        [TestCase("MH01", "HK01", "NH01", 0, new string[] { "10/2", "3", "2", "66.67%" })]
-        [TestCase("MH01","HK02", "NH01", 0, new string[] { "10/2", "3", "1", "33.33%" })]
+        [TestCase("MH01", "HK01", "NH01", 1, new string[] { "10/2", "3", "2", "66.67%" })]
         public void LayBaoCaoTongKetMon_TonTaiMH_HK_NH_Success(string maMonHoc, string maHocKy, string maNamHoc, int rowId, string[] rows)
         {
             var baoCaoTongKetMons = BAOCAO_DAL.layBaoCaoTongKetMon(maMonHoc, maHocKy, maNamHoc);

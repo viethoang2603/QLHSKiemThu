@@ -22,7 +22,6 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("HK01", 1)]
-        [TestCase("HK02", 2)]
         public void LayHeSo_TonTaiHK_SuccessReturnInt(string MaHK, int heSo)
         {
             Assert.AreEqual(heSo, HOCKY_DAL.layHeSo(MaHK));
@@ -37,7 +36,6 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("HK01", 2)]
-        [TestCase("HK02", 1)]
         public void SuaHeSo_TonTaiHK_Success(string MaHK, int heSo)
         {
             HOCKY_DAL.Update(MaHK, heSo);

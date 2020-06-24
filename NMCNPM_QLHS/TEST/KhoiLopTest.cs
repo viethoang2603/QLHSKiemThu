@@ -27,11 +27,7 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase(0, "NH01", "KHOI01", "10", 4)]
-        [TestCase(1, "NH01", "KHOI02", "11", 3)]
-        [TestCase(2, "NH01", "KHOI03", "12", 3)]
         [TestCase(0, "NH02", "KHOI04", "10", 3)]
-        [TestCase(1, "NH02", "KHOI05", "11", 2)]
-        [TestCase(2, "NH02", "KHOI06", "12", 2)]
         public void LayKhoiTheoNamHoc_TonTaiNamHoc_Success(int id, string maNamHoc, string maKhoi, string tenKhoi, int soLop)
         {
             List<KHOILOP> khoiLops = KHOILOP_DAL.LayKhoiTheoNamHoc(maNamHoc);
@@ -51,8 +47,6 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase(0, "NH01", "KHOI01", "10")]
-        [TestCase(1, "NH01", "KHOI02", "11")]
-        [TestCase(0, "NH02", "KHOI04", "10")]
         [TestCase(1, "NH02", "KHOI05", "11")]
         public void LayKhoi1011_TonTaiNamHoc_Success(int id, string maNamHoc, string maKhoi, string tenKhoi)
         {
@@ -71,7 +65,6 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("KHOI01", "NH01", "10", 4)]
-        [TestCase("KHOI02", "NH01", "11", 3)]
         [TestCase("KHOI06", "NH02", "12", 2)]
         public void LayKhoiTheoTenKhoiMaNam_TonTaiKhoiNamHoc_Success(string maKhoi, string maNamHoc, string tenKhoi, int soLop)
         {
@@ -99,7 +92,6 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("KHOI01", 4)]
-        [TestCase("KHOI03", 3)]
         [TestCase("KHOI04", 3)]
         public void LaySoLop_TonTaiKhoi_SuccessReturnInt(string maKhoi, int soLop)
         {

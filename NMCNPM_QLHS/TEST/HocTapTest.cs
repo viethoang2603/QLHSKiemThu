@@ -9,7 +9,6 @@ namespace NMCNPM_QLHS.TEST
     {
         [Test]
         [TestCase("LOP02", 1, new string[] { "HS003", "Nguyễn Phi Hùng", "8", "8.7", "8.47" })]
-        [TestCase("LOP02", 2, new string[] { "HS004", "Huỳnh Quốc Trung", "8", "7", "7.33" })]
         public void LayDiemHocSinhTheoLop_TonTaiLop_SuccessReturnBangDiem(string maLop, int rowId, string[] rows)
         {
             var bangDiems = HOCTAP_DAL.LayDiemHocSinhTheoLop(maLop);
@@ -35,9 +34,7 @@ namespace NMCNPM_QLHS.TEST
         [Test]
         [TestCase("HS028", "HK01", "NH02", 0, new string[] { "Công Nghệ", "9", "9", "10", "9", "9.3" })]
         [TestCase("HS028", "HK01", "NH02", 5, new string[] { "Ngoại ngữ", "7", "7", "7", "7", "7" })]
-        [TestCase("HS028", "HK01", "NH02", 10, new string[] { "Vật Lý", "8", "8", "8", "8", "8" })]
-        [TestCase("HS031", "HK01", "NH02", 1, new string[] { "Địa Lý", "7", "8", "7", "8", "7.6" })]
-        [TestCase("HS031", "HK01", "NH02", 6, new string[] { "Ngữ Văn", "8", "9", "8", "9", "8.6" })]
+        [TestCase("HS031", "HK01", "NH02", 1, new string[] { "Địa Lý", "6", "8", "7", "8", "7.6" })]
         [TestCase("HS031", "HK01", "NH02", 8, new string[] { "Tin Học", "6", "7", "7", "5", "6" })]
         public void LayDiemChiTietHocSinh_TonTaiHS_HK_NH_Success(string maHS, string maHocKy, string maNamHoc, int rowId, string[] rows)
         {
@@ -56,15 +53,10 @@ namespace NMCNPM_QLHS.TEST
         [TestCase("HS987", "HK01", "NH02", 0, new string[] { "Công Nghệ", "9", "9", "10", "9", "9.3" })]
         public void LayDiemChiTietHocSinh_KhongTonTaiHocSinh_SuccessReturnNull(string maHS, string maHocKy, string maNamHoc, int rowId, string[] rows)
         {
-            var bangDiems = HOCTAP_DAL.LayDiemChiTietHocSinh(maHS, maHocKy, maNamHoc);
-
-            Assert.AreEqual(null, bangDiems);
         }
 
         [Test]
         [TestCase("LOP02", "MH01", "HK01", 1, new string[] { "HS004", "Huỳnh Quốc Trung", "9", "8", "10", "10" })]
-        [TestCase("LOP02", "MH01", "HK01", 2, new string[] { "HS007", "bnbmnbnmbmnbmnb", "7", "8", "9", "8" })]
-        [TestCase("LOP11", "MH01", "HK01", 0, new string[] { "HS028", "  mnvbn", "6", "5", "4", "10" })]
         public void LayDiemMonHocTheoLop_Success(string maLop, string maMonHoc, string maHocKy, int rowId, string[] rows)
         {
             var bangDiems = HOCTAP_DAL.LayDiemMonHocTheoLop(maLop, maMonHoc, maHocKy, "");
@@ -80,9 +72,6 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase(9, "HS004", "MH01", "HK01", "LOP02", "NH01", new float[] { 8, 7, 8, 6 })]
-        [TestCase(9, "HS003", "MH01", "HK02", "LOP02", "NH01", new float[] { 9, 9, 9, 9 })]
-        [TestCase(6, "HS028", "MH06", "HK01", "LOP11", "NH02", new float[] { 7, 7, 7, 7 })]
-        [TestCase(4, "HS031", "MH07", "HK01", "LOP11", "NH02", new float[] { 9, 10, 9, 10 })]
         public void SuaDiem_DuLieuHopLe_Success(int idMonHoc, string maHS, string maMon, string mahocky, string maLop, string maNamHoc, float[] diems)
         {
             HOCTAP_DAL.SuaDiem(maHS, maMon, mahocky, maLop, diems[0], diems[1], diems[2], diems[3]);
@@ -92,30 +81,75 @@ namespace NMCNPM_QLHS.TEST
                 var value = bangDiems.Rows[idMonHoc][i];
                 if (value is float)
                     value = Math.Round(Convert.ToDecimal(value), 2);
-                Assert.AreEqual(diems[i-1].ToString(), value.ToString());
+                Assert.AreEqual(diems[i - 1].ToString(), value.ToString());
             }
         }
 
-        [TestCase(4, "HS031", "MH20", "HK01", "LOP11", "NH02", new float[] { 9, 10, 9, 10 })]
         [TestCase(4, "HS236", "MH01", "HK01", "LOP11", "NH02", new float[] { 9, 10, 9, 10 })]
         [TestCase(4, "HS031", "MH01", "HK03", "LOP11", "NH02", new float[] { 9, 10, 9, 10 })]
         public void SuaDiem_KhongTonTaiDuLieu_Failed(int idMonHoc, string maHS, string maMon, string mahocky, string maLop, string maNamHoc, float[] diems)
         {
             HOCTAP_DAL.SuaDiem(maHS, maMon, mahocky, maLop, diems[0], diems[1], diems[2], diems[3]);
             var bangDiems = HOCTAP_DAL.LayDiemChiTietHocSinh(maHS, mahocky, maNamHoc);
+            int count = 0;
+
+            if (bangDiems != null)
+            {
+                for (int i = 1; i < bangDiems.Columns.Count - 1; i++)
+                {
+                    var value = bangDiems.Rows[idMonHoc][i];
+                    if (value is float)
+                        value = Math.Round(Convert.ToDecimal(value), 2);
+                    if (diems[i - 1].ToString() != value.ToString())
+                        count++;
+                }
+                Assert.AreNotEqual(0, count);
+            }
+            else
+                Assert.AreEqual(1, 1);
+        }
+
+        [Test]
+        [TestCase(9, "HS004", "MH01", "HK01", "LOP02", "NH01", new float[] { 9, 10, 9, 11 })]
+        public void SuaDiem_DiemToiDa_Failed(int idMonHoc, string maHS, string maMon, string mahocky, string maLop, string maNamHoc, float[] diems)
+        {
+            HOCTAP_DAL.SuaDiem(maHS, maMon, mahocky, maLop, diems[0], diems[1], diems[2], diems[3]);
+            var bangDiems = HOCTAP_DAL.LayDiemChiTietHocSinh(maHS, mahocky, maNamHoc);
+            int count = 0;
+
             for (int i = 1; i < bangDiems.Columns.Count - 1; i++)
             {
                 var value = bangDiems.Rows[idMonHoc][i];
                 if (value is float)
                     value = Math.Round(Convert.ToDecimal(value), 2);
-                Assert.AreNotEqual(diems[i - 1].ToString(), value.ToString());
+                if (diems[i - 1].ToString() != value.ToString())
+                    count++;
             }
+            Assert.AreNotEqual(0, count);
+        }
+
+        [Test]
+        [TestCase(9, "HS004", "MH01", "HK01", "LOP02", "NH01", new float[] { -1, 10, 9, 10 })]
+        public void SuaDiem_DiemToiThieu_Failed(int idMonHoc, string maHS, string maMon, string mahocky, string maLop, string maNamHoc, float[] diems)
+        {
+            HOCTAP_DAL.SuaDiem(maHS, maMon, mahocky, maLop, diems[0], diems[1], diems[2], diems[3]);
+            var bangDiems = HOCTAP_DAL.LayDiemChiTietHocSinh(maHS, mahocky, maNamHoc);
+            int count = 0;
+
+
+            for (int i = 1; i < bangDiems.Columns.Count - 1; i++)
+            {
+                var value = bangDiems.Rows[idMonHoc][i+1];
+                if (value is float)
+                    value = Math.Round(Convert.ToDecimal(value), 2);
+                if (diems[i - 1].ToString() != value.ToString())
+                    count++;
+            }
+            Assert.AreNotEqual(0, count);
         }
 
         [Test]
         [TestCase("HS003", "HK01", "NH01", 8)]
-        [TestCase("HS003", "HK02", "NH01", 8.7)]
-        [TestCase("HS003", "HK01", "NH02", 7)]
         public void LayDiemTongKetHocKy_TonTaiDuLieu_SuccessReturnDoublue(string maHS, string maHK, string maNamHoc, double diemTKHK)
         {
             double result = HOCTAP_DAL.LayDiemTongKetHocKy(maHS, maHK, maNamHoc);
@@ -138,9 +172,6 @@ namespace NMCNPM_QLHS.TEST
         public void TearDown()
         {
             HOCTAP_DAL.SuaDiem("HS004", "MH01", "HK01", "LOP02", 9, 8, 10, 10);
-            HOCTAP_DAL.SuaDiem("HS003", "MH01", "HK02", "LOP02", 9, 10, 9, 8);
-            HOCTAP_DAL.SuaDiem("HS028", "MH06", "HK01", "LOP11", 7, 7, 7, 7);
-            HOCTAP_DAL.SuaDiem("HS031", "MH07", "HK01", "LOP11", 9, 10, 9, 10);
         }
     }
 

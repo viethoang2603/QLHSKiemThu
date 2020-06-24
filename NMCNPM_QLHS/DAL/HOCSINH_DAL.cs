@@ -4,6 +4,7 @@ using System.Data.Linq;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -36,6 +37,8 @@ namespace NMCNPM_QLHS.DAL
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 HOCSINH hs = db.HOCSINHs.Where(a => a.MAHS == maHS).FirstOrDefault();
+                if (hs is null)
+                    return;
                 hs.HOTEN = hoTen;
                 hs.GIOITINH = gioiTinh;
                 hs.NGAYSINH = ngaySinh;
@@ -106,8 +109,6 @@ namespace NMCNPM_QLHS.DAL
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 var ds = db.sp_LayHocSinhTheoLop(maLop, maHocKy);
-                if (ds.ToList().Count == 0)
-                    return null;
                 foreach (var x in ds)
                 {
                     HOCSINH hs = new HOCSINH();
@@ -122,6 +123,8 @@ namespace NMCNPM_QLHS.DAL
                     }
                 }
             }
+            if (lst.Count == 0)
+                return null;
             return lst;
         }
 
@@ -187,8 +190,6 @@ namespace NMCNPM_QLHS.DAL
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 var ds = db.sp_TimHSTheoTen(ten);
-                if (ds.ToList().Count == 0)
-                    return null;
                 foreach (var x in ds)
                 {
                     HOCSINH hs = new HOCSINH();
@@ -203,6 +204,8 @@ namespace NMCNPM_QLHS.DAL
                     }
                 }
             }
+            if (lst.Count == 0)
+                return null;
             return lst;
         }
 
@@ -213,8 +216,6 @@ namespace NMCNPM_QLHS.DAL
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 var ds = db.sp_TimHSTheoMaHS(maHS);
-                if (ds.ToList().Count == 0)
-                    return null;
 
                 foreach (var x in ds)
                 {
@@ -230,6 +231,10 @@ namespace NMCNPM_QLHS.DAL
                         lst.Add(hs);
                     }
                 }
+            }
+            if(lst.Count == 0)
+            {
+                return null;
             }
             return lst;
         }

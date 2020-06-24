@@ -12,7 +12,7 @@ namespace NMCNPM_QLHS.TEST
         [TestCase(0,"MH01","Toán")]
         [TestCase(5, "MH06", "Ngữ Văn")]
         [TestCase(10, "MH11", "Công Nghệ")]
-        public void LayTatCaMonHoc(int id, string maMH, string tenMH)
+        public void LayTatCaMonHoc_Success(int id, string maMH, string tenMH)
         {
             List<MONHOC> monHocs = MONHOC_DAL.LayTatCaMonHoc();
             Assert.AreEqual(maMH, monHocs[id].MAMONHOC);
@@ -20,31 +20,54 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [Test]
-        public void insert(string maMH, string tenMH)
+        [TestCase("MH99", "Toán cao cấp")]
+        public void insert_DuLieuHopLe_Success(string maMH, string tenMH)
+        {
+
+        }
+
+        [Test]
+        [TestCase("MH01", "Toán cao cấp")]
+        public void insert_TrungMaMH_Failed(string maMH, string tenMH)
         {
 
         }
 
         [Test]
         [TestCase(0,"MH01","Toán cao cấp")]
-        [TestCase(1,"MH02", "updated tenMH")]
-        public void update(int id, string maMH, string tenMH)
+        public void update_TonTaiMonHoc_Success(int id, string maMH, string tenMH)
         {
             MONHOC_DAL.update(maMH, tenMH);
             Assert.AreEqual(tenMH, MONHOC_DAL.LayTatCaMonHoc()[id].TENMONHOC);
         }
 
         [Test]
-        public void delete(string maMH)
+        [TestCase(0, "MH98", "Toán cao cấp")]
+        public void update_KhongTonTaiMonHoc_Failed(int id, string maMH, string tenMH)
+        {
+            MONHOC_DAL.update(maMH, tenMH);
+            Assert.AreEqual(tenMH, MONHOC_DAL.LayTatCaMonHoc()[id].TENMONHOC);
+        }
+
+        [Test]
+        [TestCase("MH99")]
+        public void delete_TonTaiMonHoc_Success(string maMH)
         {
                
+        }
+
+        [Test]
+        [TestCase("M98")]
+        public void delete_KhongTonTaiMonHoc_Failed(string maMH)
+        {
+
         }
 
         [OneTimeTearDown]
         public void TearDown()
         {
             MONHOC_DAL.update("MH01", "Toán");
-            MONHOC_DAL.update("MH02", "Vật Lý");
+            MONHOC_DAL.delete("MH99");
         }
     }
 

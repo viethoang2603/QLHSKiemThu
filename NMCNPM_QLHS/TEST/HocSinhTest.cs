@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Globalization;
+using System.Linq;
 
 namespace NMCNPM_QLHS.TEST
 {
@@ -13,7 +14,6 @@ namespace NMCNPM_QLHS.TEST
     {
         [Test]
         [TestCase("HS113", "testName", "Nam", "22-06-1999", "testAddress", "testEmail@gmail.com")]
-        [TestCase("HS112", "testName2", "Nam", "20-06-1999", "testAddress2", "testEmail2@gmail.com")]
         public void Insert_DuLieuHopLe_Success(string maHS, string hoTen, string gioiTinh, string ngaySinh, string diaChi, string email)
         {
             int old_HSQuantity = HOCSINH_DAL.LayTatCaHocSinh().Count;
@@ -30,6 +30,29 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [Test]
+        [TestCase("HS678", "testName2", "Nam", "20-06-1996", "testAddress2", "testEmail2@gmail.com")]
+        public void Insert_TuoiToiDa_Failed(string maHS, string hoTen, string gioiTinh, string ngaySinh, string diaChi, string email)
+        {
+            int old_HSQuantity = HOCSINH_DAL.LayTatCaHocSinh().Count;
+            DateTime birth = DateTime.ParseExact(ngaySinh, "dd-MM-yyyy", CultureInfo.CreateSpecificCulture("en-GB"));
+            HOCSINH_DAL.Insert(maHS, hoTen, gioiTinh, birth, diaChi, email, null);
+            int new_HSQuantity = HOCSINH_DAL.LayTatCaHocSinh().Count;
+            Assert.AreEqual(old_HSQuantity, new_HSQuantity);
+        }
+
+        [Test]
+        [TestCase("HS786", "testName2", "Nam", "20-06-2006", "testAddress2", "testEmail2@gmail.com")]
+        public void Insert_TuoiToiThieu_Failed(string maHS, string hoTen, string gioiTinh, string ngaySinh, string diaChi, string email)
+        {
+            int old_HSQuantity = HOCSINH_DAL.LayTatCaHocSinh().Count;
+            DateTime birth = DateTime.ParseExact(ngaySinh, "dd-MM-yyyy", CultureInfo.CreateSpecificCulture("en-GB"));
+            HOCSINH_DAL.Insert(maHS, hoTen, gioiTinh, birth, diaChi, email, null);
+            int new_HSQuantity = HOCSINH_DAL.LayTatCaHocSinh().Count;
+            Assert.AreEqual(old_HSQuantity, new_HSQuantity);
+        }
+
+
+        [Test]
         [TestCase("HS001", "testName2", "Nam", "20-06-1999", "testAddress2", "testEmail2@gmail.com")]
         public void Insert_MaHSDaTonTai_DBException(string maHS, string hoTen, string gioiTinh, string ngaySinh, string diaChi, string email)
         {
@@ -41,7 +64,7 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [Test]
-        [TestCase("HS001", "testName2", "Nam", "32-06-1999", "testAddress2", "testEmail2@gmail.com")]
+        [TestCase("HS567", "testName2", "Nam", "32-06-1999", "testAddress2", "testEmail2@gmail.com")]
         public void Insert_NgSinhKhongHopLe_FormatException(string maHS, string hoTen, string gioiTinh, string ngaySinh, string diaChi, string email)
         {
             int old_HSQuantity = HOCSINH_DAL.LayTatCaHocSinh().Count;
@@ -51,7 +74,7 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [Test]
-        [TestCase("HS001", "testNameupdate", "Nam", "23-06-1999", "testAddressupdate", "testEmailupdate@gmail.com")]
+        [TestCase("HS113", "testNameupdate", "Nam", "23-06-1999", "testAddressupdate", "testEmailupdate@gmail.com")]
         [TestCase("HS002", "testName2update", "Nam", "25-06-1999", "testAddress2update", "testEmail2update@gmail.com")]
         public void Update_DuLieuHopLe_Success(string maHS, string hoTen, string gioiTinh, string ngaySinh, string diaChi, string email)
         {
@@ -69,12 +92,32 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [Test]
-        [TestCase("HS113", "testNameupdate", "Nam", "23-06-1999", "testAddressupdate", "testEmailupdate@gmail.com")]
+        [TestCase("HS002", "testName2", "Nam", "20-06-1998", "testAddress2", "testEmail2@gmail.com")]
+        public void Update_TuoiToiDa_Failed(string maHS, string hoTen, string gioiTinh, string ngaySinh, string diaChi, string email)
+        {
+            DateTime birth = DateTime.ParseExact(ngaySinh, "dd-MM-yyyy", CultureInfo.CreateSpecificCulture("en-GB"));
+            HOCSINH_DAL.Update(maHS, hoTen, gioiTinh, birth, diaChi, email, null);
+            HOCSINH hs = HOCSINH_DAL.timTTHSTheoMaHS(maHS).FirstOrDefault();
+            Assert.AreNotEqual(birth, hs.NGAYSINH);
+        }
+
+        [Test]
+        [TestCase("HS002", "testName2", "Nam", "20-06-2006", "testAddress2", "testEmail2@gmail.com")]
+        public void Update_TuoiToiThieu_Failed(string maHS, string hoTen, string gioiTinh, string ngaySinh, string diaChi, string email)
+        {
+            DateTime birth = DateTime.ParseExact(ngaySinh, "dd-MM-yyyy", CultureInfo.CreateSpecificCulture("en-GB"));
+            HOCSINH_DAL.Update(maHS, hoTen, gioiTinh, birth, diaChi, email, null);
+            HOCSINH hs = HOCSINH_DAL.timTTHSTheoMaHS(maHS).FirstOrDefault();
+            Assert.AreNotEqual(birth, hs.NGAYSINH);
+        }
+
+        [Test]
+        [TestCase("HS456", "testNameupdate", "Nam", "23-06-1999", "testAddressupdate", "testEmailupdate@gmail.com")]
         public void Update_KhongTonTaiHS_NullException(string maHS, string hoTen, string gioiTinh, string ngaySinh, string diaChi, string email)
         {
             //int old_HSQuantity = HOCSINH_DAL.LayTatCaHocSinh().Count;
             DateTime birth = DateTime.ParseExact(ngaySinh, "dd-MM-yyyy", CultureInfo.CreateSpecificCulture("en-GB"));
-            Assert.Throws<System.NullReferenceException>(() => HOCSINH_DAL.Update(maHS, hoTen, gioiTinh, birth, diaChi, email, null));
+            HOCSINH_DAL.Update(maHS, hoTen, gioiTinh, birth, diaChi, email, null);
         }
 
         [Test]
@@ -85,8 +128,8 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [Test]
-        [TestCase("HS111")]
-        [TestCase("HS112")]
+        [TestCase("HS113")]
+        [TestCase("HS001")]
         public void Delete(string maHS)
         {
             //int old_HSQuantity = HOCSINH_DAL.LayTatCaHocSinh().Count;
@@ -115,9 +158,6 @@ namespace NMCNPM_QLHS.TEST
         [Test]
         [TestCase("LOP01", "HK01", 1, "HS012", "abcdm", "Nam", "01-01-1999", "Phú Ninh, Quảng Nam", "17520084@gm.agds")]
         [TestCase("LOP01", "HK01", 2, "HS013", "Senko", "Nữ", "10-10-1999", "bmnbnmbn", "bmnbnmbn@gmail.com")]
-        [TestCase("LOP02", "HK01", 0, "HS002", "Nguyễn Lê Việt Hoàng", "Nam", "20-03-1999", "Quế Sơn, Quảng Nam", "17520513@gm.uit.edu.vn")]
-        [TestCase("LOP02", "HK01", 1, "HS004", "Huỳnh Quốc Trung", "Nam", "01-01-1999", "Phú Ninh, Quảng Nam", "17520084@gm.uit.edu.vn")]
-        [TestCase("LOP11", "HK02", 1, "HS031", "Lisa", "Nữ", "27-06-1999", "lisa@gmail.com", "Korea@gmail.com")]
         public void LayHocSinhTheoLop_TonTaiLop_Success(string maLop, string maHocKy, int id, string maHS, string tenHS, string gioiTinh, string ngaySinh, string diaChi, string email)
         {
             List<HOCSINH> hocSinhs = HOCSINH_DAL.LayHocSinhTheoLop(maLop, maHocKy);
@@ -139,8 +179,6 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase(0, "HS001", "Lê Quốc Phương")]
-        [TestCase(9, "HS013", "Senko")]
-        [TestCase(18, "HS034", "bcs")]
         public void LayDSHocSinhDaPhanLop_Success(int id, string maHS, string tenHS)
         {
             List<HOCSINH> hocSinhs = HOCSINH_DAL.LayDSHocSinhDaPhanLop();
@@ -150,8 +188,6 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase(0, "HS005", "abcx")]
-        [TestCase(3, "HS030", "mbmnbmnbnmbnm")]
-        [TestCase(6, "HS037", "bnbnbnbn")]
         public void LayHocSinhChuaPhanLop_Success(int id, string maHS, string tenHS)
         {
             List<HOCSINH> hocSinhs = HOCSINH_DAL.LayHocSinhChuaPhanLop();
@@ -208,10 +244,10 @@ namespace NMCNPM_QLHS.TEST
         {
             DateTime birthDay1 = DateTime.ParseExact("02-02-1999", "dd-MM-yyyy", CultureInfo.CreateSpecificCulture("en-GB"));
             DateTime birthDay2 = DateTime.ParseExact("20-03-1999", "dd-MM-yyyy", CultureInfo.CreateSpecificCulture("en-GB"));
-            HOCSINH_DAL.Update("HS001", "Lê Quốc Phương", "Nam", birthDay1, "Quảng bình", "17520000@gm.uit.edu.vn", null);
             HOCSINH_DAL.Update("HS002", "Nguyễn Lê Việt Hoàng", "Nam", birthDay2, "Quế Sơn, Quảng Nam", "17520513@gm.uit.edu.vn", null);
             HOCSINH_DAL.Delete("HS113");
-            HOCSINH_DAL.Delete("HS112");
+            HOCSINH_DAL.Delete("HS678");
+            HOCSINH_DAL.Delete("HS786");
         }
     }
 
