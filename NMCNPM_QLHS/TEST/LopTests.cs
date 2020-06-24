@@ -111,6 +111,8 @@ namespace NMCNPM_QLHS.TEST
         [Test]
         [TestCase("LOP01")]
         [TestCase("LOP02")] //Vì xóa mã học sinh của quá trình học nên xóa luôn lớp khác -> test fail 
+        [TestCase("LOP03")]
+        [TestCase("LOP04")]
         public void Xoa_TonTai_ThanhCong(string maLop)
         {
             BackupForDeleted(maLop);
@@ -132,6 +134,8 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("LOP91")]
+        [TestCase("LOP92")]
+        [TestCase("LOP93")]
         public void Xoa_KhongTonTai_SLRecordsXoaBang0(string maLop)
         {
             int allQths = db.QUATRINHHOCs.Count();
