@@ -20,6 +20,8 @@ namespace NMCNPM_QLHS.TEST
         #region DangNhap_Test
         [Test]
         [TestCase("admin", "admin")]
+        [TestCase("bgh1", "bgh1")]
+        [TestCase("gvu1", "gvu1")]
         [Category("Dang_Nhap")]
         public void DangNhap_ChinhXac_HopLe(string tendangnhap, string pass)
         {
@@ -28,7 +30,7 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [Test]
-        [TestCase("admin", "admin1")]
+        [TestCase("admin", "bgh1")]
         [Category("Dang_Nhap")]
         public void DangNhap_SaiMatKhau_KhongHopLe(string tendangnhap, string pass)
         {
@@ -58,6 +60,8 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("ND0001", "phuongle", "Phuong Le", "LND001")]
+        [TestCase("ND0002", "phuongle", "Phuong Le", "LND001")]
+        [TestCase("ND0003", "phuongle", "Phuong Le", "LND001")]
         public void ThemNguoiDung_BiTrung_DbException(string maND, string taikhoan, string ten, string loaiquyen)
         {
             Assert.Throws<System.Data.SqlClient.SqlException>(() => NGUOIDUNG_DAL.insert(maND, ten, loaiquyen, taikhoan));
@@ -65,6 +69,8 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("NDABCD", "phuongle", "Phuong Le", "LND091")]
+        [TestCase("NDABCD", "phuongle", "Phuong Le", "LND092")]
+        [TestCase("NDABCD", "phuongle", "Phuong Le", "LND093")]
         public void ThemNguoiDung_KhongTonTaiLND_DbException(string maND, string taikhoan, string ten, string loaiquyen)
         {
             Assert.Throws<System.Data.SqlClient.SqlException>(() => NGUOIDUNG_DAL.insert(maND, ten, loaiquyen, taikhoan));

@@ -22,6 +22,8 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("NH01", "HS001")]
+        [TestCase("NH01", "HS002")]
+        [TestCase("NH01", "HS003")]
         public void LayTheoMaHS_TonTaiHocSinh_ThanhCong(string maNamHocDauTien, string maHocSinh)
         {
             var x = NAMHOC_DAL.LayNamHocTheoMaHS(maHocSinh);
