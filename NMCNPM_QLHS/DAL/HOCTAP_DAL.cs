@@ -148,6 +148,5 @@ namespace NMCNPM_QLHS.DAL
                     return 0;
             }
         }
-
     }
 }
