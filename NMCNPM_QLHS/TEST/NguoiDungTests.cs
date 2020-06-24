@@ -84,6 +84,14 @@ namespace NMCNPM_QLHS.TEST
             Assert.IsFalse(NGUOIDUNG_DAL.KiemTraTonTai(tenDangNhap));
         }
 
+        [Test]
+        [TestCase("ND0091", "test")]
+        public void XoaNguoiDung_KoTonTai_KhongLoi(string maND, string tenDangNhap)
+        {
+            NGUOIDUNG_DAL.delete(maND);
+            Assert.IsFalse(NGUOIDUNG_DAL.KiemTraTonTai(tenDangNhap));
+        }
+
         #endregion
 
         [Test]
@@ -105,13 +113,15 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [TestCase("ND0001", "Lê Thiên Đế")]
+        [TestCase("ND0002", "Nguyễn Hoàng Thượng")]
+        [TestCase("ND0003", "Đặng Tể Tướng")]
         public void LayTenNguoiDung_TonTai_ThanhCong(string maNguoiDung, string tenNguoiDung)
         {
             Assert.AreEqual(NGUOIDUNG_DAL.LayTenNguoiDung(maNguoiDung), tenNguoiDung);
         }
 
         [TestCase("ND9848", "unknown")]
-        public void Lay_KhongTonTai_TraVeUnknown(string maNguoiDung, string tenNguoiDung)
+        public void LayTenNguoiDung_KhongTonTai_TraVeUnknown(string maNguoiDung, string tenNguoiDung)
         {
             Assert.AreEqual(NGUOIDUNG_DAL.LayTenNguoiDung(maNguoiDung), tenNguoiDung);
         }

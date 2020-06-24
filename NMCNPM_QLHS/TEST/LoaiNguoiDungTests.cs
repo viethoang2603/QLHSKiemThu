@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace NMCNPM_QLHS.TEST
 {
     [TestFixture]
-    class LoaiNguoiDungTests
+    public class LoaiNguoiDungTests
     {
         List<LOAINGUOIDUNG> loaiNguoiDungs;
 

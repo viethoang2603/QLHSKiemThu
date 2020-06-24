@@ -28,14 +28,16 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("TUOITUOI", 15)]
+        [TestCase("SISO", 15)]
         public void Lay_SaiTenThamSo_FailedNull(string tenThamSo, int result)
         {
             var thamSo = THAMSO_DAL.LayThamSo(tenThamSo);
-            Assert.AreEqual(null, thamSo);
+            Assert.Null(thamSo);
         }
 
         [Test]
-        [TestCase(10, 50, 20, 1, 100, 60, 60)]
+        [TestCase(10, 50, 10, 15, 100, 60, 60)]
+        [TestCase(5, 20, 20, 1, 60, 100, 50)]
         public void LuuQuyDinh_DungThuTu_Success(
             double tuoiToiThieu,
             double tuoiToiDa,

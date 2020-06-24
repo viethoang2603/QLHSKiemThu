@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace NMCNPM_QLHS.TEST
 {
     [TestFixture]
-    class NamHocTests
+    public class NamHocTests
     {
         [Test]
         public void Them_NamHocMoi_ThanhCong()
@@ -33,15 +33,9 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [Test]
-        [TestCase("NH01", "HS091")]
-        public void LayTheoMaHS_KoTonTaiHocSinh_KhongCoNamHoc(string maNamHocDauTien, string maHocSinh)
-        {
-            var x = NAMHOC_DAL.LayNamHocTheoMaHS(maHocSinh);
-            Assert.AreEqual(x.Count(), 0);
-        }
-
-        [Test]
         [TestCase("NH01", "HS999")]
+        [TestCase("NH01", "HS091")]
+        [TestCase("NH01", "HS092")]
         public void LayTheoMaHS_HSKhongTonTai_KhongCoNamHoc(string maNamHocDauTien, string maHocSinh)
         {
             var namHocs = NAMHOC_DAL.LayNamHocTheoMaHS(maHocSinh);
@@ -50,6 +44,7 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("NH01", "2017-2018")]
+        [TestCase("NH02", "2018-2019")]
         public void LayTheoTen_TonTai_ThanhCong(string maNamHoc, string ten)
         {
             var x = NAMHOC_DAL.LayNamHocTheoTen(ten);
@@ -58,8 +53,9 @@ namespace NMCNPM_QLHS.TEST
         }
 
         [Test]
-        [TestCase("NH01", "2029-2030")]
-        public void LayTheoTen_TenKhongTonTai_Null(string maNamHoc, string ten)
+        [TestCase("2029-2030")]
+        [TestCase("2030")]
+        public void LayTheoTen_TenKhongTonTai_Null(string ten)
         {
             var x = NAMHOC_DAL.LayNamHocTheoTen(ten);
             Assert.Null(x);

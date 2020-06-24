@@ -15,6 +15,8 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("HS001", "LOP07", "HK01", true)]
+        [TestCase("HS003", "LOP15", "HK01", true)]
+        [TestCase("HS004", "LOP02", "HK01", true)]
         public void KiemTraTonTai_TonTai_True(string maHocSinh, string maLop, string maHocKy, bool result)
         {
             Assert.AreEqual(QUATRINHHOC_DAL.KiemTraTonTai(maHocSinh, maLop, maHocKy), result);
@@ -22,7 +24,21 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("HS001", "LOP08", "HK01", false)]
-        public void KiemTraTonTai_KhongTonTai_False(string maHocSinh, string maLop, string maHocKy, bool result)
+        public void KiemTraTonTai_KhongTonTaiMaLop_False(string maHocSinh, string maLop, string maHocKy, bool result)
+        {
+            Assert.AreEqual(QUATRINHHOC_DAL.KiemTraTonTai(maHocSinh, maLop, maHocKy), result);
+        }
+
+        [Test]
+        [TestCase("HS091", "LOP08", "HK01", false)]
+        public void KiemTraTonTai_KhongTonTaiHS_False(string maHocSinh, string maLop, string maHocKy, bool result)
+        {
+            Assert.AreEqual(QUATRINHHOC_DAL.KiemTraTonTai(maHocSinh, maLop, maHocKy), result);
+        }
+
+        [Test]
+        [TestCase("HS001", "LOP01", "HK03", false)]
+        public void KiemTraTonTai_KhongTonTaiHocKy_False(string maHocSinh, string maLop, string maHocKy, bool result)
         {
             Assert.AreEqual(QUATRINHHOC_DAL.KiemTraTonTai(maHocSinh, maLop, maHocKy), result);
         }
@@ -45,6 +61,7 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase("HS091", 0, new string[] { "2017-2018", "Học kỳ 1", "10/3", "8" })]
+        [TestCase("HS092", 0, new string[] { "2017-2018", "Học kỳ 1", "10/3", "8" })]
         public void LayQuaTrinhHS_KoTonTai_Null(string maHocSinh, int rowId, string[] row)
         {
             var table = QUATRINHHOC_DAL.LayQuaTrinhHocCuaHocSinh(maHocSinh);
