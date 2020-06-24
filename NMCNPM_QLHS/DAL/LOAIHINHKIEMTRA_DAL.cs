@@ -36,6 +36,8 @@ namespace NMCNPM_QLHS.DAL
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 LOAIHINHKIEMTRA lhkt = db.LOAIHINHKIEMTRAs.Where(a => a.MALHKT == maLHKT).FirstOrDefault();
+                //if (lhkt is null)
+                //    return -1;
                 return lhkt.HESO.Value;
             }
         }

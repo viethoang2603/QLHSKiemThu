@@ -106,6 +106,8 @@ namespace NMCNPM_QLHS.DAL
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 var ds = db.sp_LayHocSinhTheoLop(maLop, maHocKy);
+                if (ds.ToList().Count == 0)
+                    return null;
                 foreach (var x in ds)
                 {
                     HOCSINH hs = new HOCSINH();
@@ -185,6 +187,8 @@ namespace NMCNPM_QLHS.DAL
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 var ds = db.sp_TimHSTheoTen(ten);
+                if (ds.ToList().Count == 0)
+                    return null;
                 foreach (var x in ds)
                 {
                     HOCSINH hs = new HOCSINH();
@@ -209,6 +213,9 @@ namespace NMCNPM_QLHS.DAL
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 var ds = db.sp_TimHSTheoMaHS(maHS);
+                if (ds.ToList().Count == 0)
+                    return null;
+
                 foreach (var x in ds)
                 {
                     HOCSINH hs = new HOCSINH();

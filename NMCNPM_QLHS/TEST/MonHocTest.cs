@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace NMCNPM_QLHS.TEST
 {
     [TestFixture]
-    public class MonHoc
+    public class MonHocTest
     {
         [Test]
         [TestCase(0,"MH01","Toán")]
@@ -37,7 +37,7 @@ namespace NMCNPM_QLHS.TEST
         [Test]
         public void delete(string maMH)
         {
-
+               
         }
 
         [OneTimeTearDown]

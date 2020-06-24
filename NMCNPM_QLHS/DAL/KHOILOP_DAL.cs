@@ -39,7 +39,9 @@ namespace NMCNPM_QLHS.DAL
 
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
-                var ds = db.KHOILOPs.Where(a => a.MANAM == maNamHoc).ToList();
+                var ds = db.KHOILOPs.Where(a => a.MANAM == maNamHoc);
+                if (ds.ToList().Count == 0)
+                    return null;
                 foreach (var x in ds)
                 {
                     KHOILOP khoiLop = new KHOILOP();
@@ -60,7 +62,9 @@ namespace NMCNPM_QLHS.DAL
 
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
-                var ds = db.KHOILOPs.Where(a => (a.MANAM == maNamHoc) && (a.TENKHOI == "10" || a.TENKHOI == "11")).ToList();
+                var ds = db.KHOILOPs.Where(a => (a.MANAM == maNamHoc) && (a.TENKHOI == "10" || a.TENKHOI == "11"));
+                if (ds.ToList().Count == 0)
+                    return null;
                 foreach (var x in ds)
                 {
                     KHOILOP khoiLop = new KHOILOP();
@@ -75,11 +79,14 @@ namespace NMCNPM_QLHS.DAL
         }
 
         // Lấy khối lớp theo mã khối mã năm
-        public static List<KHOILOP> LayKhoiTheoMaKhoiMaNam(string tenKhoiLop, string maNamHoc)
+        public static List<KHOILOP> LayKhoiTheoTenKhoiMaNam(string tenKhoiLop, string maNamHoc)
         {
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
-                return db.KHOILOPs.Where(a => a.MANAM == maNamHoc && a.TENKHOI == tenKhoiLop).ToList();
+                var khoiLops = db.KHOILOPs.Where(a => a.MANAM == maNamHoc && a.TENKHOI == tenKhoiLop).ToList();
+                if (khoiLops.Count == 0)
+                    return null;
+                return khoiLops;
             }
         }
 

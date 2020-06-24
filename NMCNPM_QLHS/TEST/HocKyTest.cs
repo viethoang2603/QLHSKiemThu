@@ -11,7 +11,7 @@ namespace NMCNPM_QLHS.TEST
         [Test]
         [TestCase(0, "HK01", "Học kỳ 1", 1)]
         [TestCase(1, "HK02", "Học kỳ 2", 2)]
-        public void LayTatCaHocKy_ThanhCong(int id, string MaHK, string TenHK, int heSo)
+        public void LayTatCaHocKy_Success(int id, string MaHK, string TenHK, int heSo)
         {
             List<HOCKY> hocKys;
             hocKys = HOCKY_DAL.LayTatCaHocKy();
@@ -23,25 +23,40 @@ namespace NMCNPM_QLHS.TEST
         [Test]
         [TestCase("HK01", 1)]
         [TestCase("HK02", 2)]
-        public void LayHeSo_ThanhCong(string MaHK, int heSo)
+        public void LayHeSo_TonTaiHK_SuccessReturnInt(string MaHK, int heSo)
         {
             Assert.AreEqual(heSo, HOCKY_DAL.layHeSo(MaHK));
         }
 
-        [TestCase("HK01", 3)]
-        [TestCase("HK03", 1)]
         [Test]
-        public void LayHeSo_ThatBai(string MaHK, int heSo)
+        [TestCase("HK03")]
+        public void LayHeSo_KhongTonTaiHK_NullException(string MaHK)
         {
-            Assert.AreNotEqual(heSo, HOCKY_DAL.layHeSo(MaHK));
+            Assert.Throws<System.NullReferenceException>(() => HOCKY_DAL.layHeSo(MaHK));
         }
 
         [Test]
         [TestCase("HK01", 2)]
-        [TestCase("HK02", 0)]
-        public void SuaHeSo_ThanhCong(string MaHK, int heSo)
+        [TestCase("HK02", 1)]
+        public void SuaHeSo_TonTaiHK_Success(string MaHK, int heSo)
         {
             HOCKY_DAL.Update(MaHK, heSo);
+            Assert.AreEqual(heSo, HOCKY_DAL.layHeSo(MaHK));
+        }
+
+        [Test]
+        [TestCase("HK03")]
+        public void SuaHeSo_KhongTonTaiHK_NullException(string MaHK)
+        {
+            Assert.Throws<System.NullReferenceException>(() => HOCKY_DAL.layHeSo(MaHK));
+        }
+
+        [Test]
+        [TestCase("HK02", 0)]
+        public void SuaHeSo_HeSoKhongHopLe_Failed(string MaHK, int heSo)
+        {
+            HOCKY_DAL.Update(MaHK, heSo);
+            Assert.AreNotEqual(heSo, HOCKY_DAL.layHeSo(MaHK));
         }
 
         [OneTimeTearDown]

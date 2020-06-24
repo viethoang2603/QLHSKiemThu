@@ -43,6 +43,8 @@ namespace NMCNPM_QLHS.DAL
         // Sửa hệ số học kỳ
         public static void Update(string maHK, int heSo)
         {
+            if(heSo < 1)
+                return;
             using (SQL_QLHSDataContext db = new SQL_QLHSDataContext())
             {
                 HOCKY hk = db.HOCKies.Where(a => a.MAHK == maHK).FirstOrDefault();

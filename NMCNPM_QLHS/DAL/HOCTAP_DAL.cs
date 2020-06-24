@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.XtraRichEdit.API.Native.Implementation;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -111,6 +112,8 @@ namespace NMCNPM_QLHS.DAL
                     r["DIEMTHI"] = i.DIEMTHI;
                 dt.Rows.Add(r);
             }
+            if (dt.Rows.Count == 0)
+                return null;
             return dt;
         }
 
@@ -145,7 +148,7 @@ namespace NMCNPM_QLHS.DAL
                 if (diem.HasValue)
                     return diem.Value;
                 else
-                    return 0;
+                    return -1;
             }
         }
     }

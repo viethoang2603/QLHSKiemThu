@@ -33,13 +33,13 @@ namespace NMCNPM_QLHS.BUS
         {
             int khoiMoi = int.Parse(tenKhoiLopCu) + 1;
             string tenKhoiLopMoi = khoiMoi.ToString();
-            return KHOILOP_DAL.LayKhoiTheoMaKhoiMaNam(tenKhoiLopMoi, maNamHoc);
+            return KHOILOP_DAL.LayKhoiTheoTenKhoiMaNam(tenKhoiLopMoi, maNamHoc);
         }
 
         // Lấy Cùng khối lớp năm sau
         public static List<KHOILOP> LayCungKhoiLopNamSau(string tenKhoiLopCu, string maNamHoc)
         {
-            return KHOILOP_DAL.LayKhoiTheoMaKhoiMaNam(tenKhoiLopCu, maNamHoc);
+            return KHOILOP_DAL.LayKhoiTheoTenKhoiMaNam(tenKhoiLopCu, maNamHoc);
         }
 
         // Kiểm tra số lượng lớp
