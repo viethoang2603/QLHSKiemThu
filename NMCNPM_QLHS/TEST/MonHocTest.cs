@@ -43,10 +43,10 @@ namespace NMCNPM_QLHS.TEST
 
         [Test]
         [TestCase(0, "MH98", "Toán cao cấp")]
-        public void update_KhongTonTaiMonHoc_Failed(int id, string maMH, string tenMH)
+        public void update_KhongTonTaiMonHoc_NullException(int id, string maMH, string tenMH)
         {
-            MONHOC_DAL.update(maMH, tenMH);
-            Assert.AreEqual(tenMH, MONHOC_DAL.LayTatCaMonHoc()[id].TENMONHOC);
+            Assert.Throws<System.NullReferenceException>(() => MONHOC_DAL.update(maMH, tenMH));
+
         }
 
         [Test]
